@@ -1,0 +1,18 @@
+---
+# Configuration file for https://megalinter.io/
+PRINT_ALPACA: false
+SHOW_ELAPSED_TIME: true
+PYTHON_MYPY_FILTER_REGEX_EXCLUDE: docs/
+YAML_V8R_FILTER_REGEX_EXCLUDE: tests/files/
+PYTHON_BANDIT_FILTER_REGEX_EXCLUDE: docs/|tests/
+PYTHON_PYRIGHT_FILTER_REGEX_EXCLUDE: docs/|tests/
+PYTHON_ISORT_CONFIG_FILE: LINTER_DEFAULT
+PYTHON_PYLINT_ARGUMENTS: "--disable=F0401,E0611"
+DISABLE:
+  - SPELL
+DISABLE_LINTERS:
+  - RST_RSTCHECK # Does not support sphinx
+  - RST_RST_LINT # Does not support sphinx
+  - COPYPASTE_JSCPD
+PYTHON_PYRIGHT_PRE_COMMANDS:
+  - command: pip3 install poetry; poetry install

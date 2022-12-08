@@ -1,0 +1,12 @@
+---
+jiav:
+  verified_status: Done
+  verification_steps:
+    - name: Check for line
+      backend: lineinfile
+      path: tests/files/single_lineinfile.yaml
+      line: jiav
+    - name: Check for line
+      backend: regexinfile
+      path: tests/files/single_regexinfile.yaml
+      regex: jiav
