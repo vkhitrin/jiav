@@ -1,0 +1,8 @@
+---
+jiavE:
+  verified_status: Done
+  verification_steps:
+    - name: Check for command
+      backend: shell
+      cmd: which jiav
+      rc: 0

@@ -1,0 +1,7 @@
+# Ignore Python
+__pycache__
+.poetry.lock
+# Ignore docs
+docs/build
+# Ignore macOS files
+.DS_Store

@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "jiav"
+version = "0.0.1"
+description = "Jira Issues Auto Verifier"
+authors = ["Vadim Khitrin <me@vkhitrin.com>"]
+license = "Apache License 2.0"
+readme = "README.md"
+homepage = "https://github.com/vkhitrin/jiav"
+repository = "https://github.com/vkhitrin/jiav"
+documentation = "https://jiav.readthedocs.io"
+
+packages = [{ include = "jiav" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+colorlog = "^6.7.0"
+strictyaml = "^1.6.2"
+jsonschema = "^4.17.3"
+prettytable = "^3.5.0"
+pyyaml = "^6.0"
+jira = "^3.4.1"
+iteration-utilities = "^0.11.0"
+
+[tool.poetry.scripts]
+jiav = "jiav:cli.main"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
