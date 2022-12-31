@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jiav"
-version = "0.0.1"
+version = "0.1.0"
 description = "Jira Issues Auto Verifier"
 authors = ["Vadim Khitrin <me@vkhitrin.com>"]
 license = "BSD-3-Clause"
@@ -8,8 +8,18 @@ readme = "README.md"
 homepage = "https://github.com/vkhitrin/jiav"
 repository = "https://github.com/vkhitrin/jiav"
 documentation = "https://jiav.readthedocs.io"
-
 packages = [{ include = "jiav" }]
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Environment :: Console',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: POSIX :: Linux',
+    'Operating System :: MacOS',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.8',
+    'Topic :: Utilities'
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.8"
