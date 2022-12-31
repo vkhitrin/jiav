@@ -20,7 +20,7 @@ class JiraConnection(object):
         """
         Attempts to authenticate with Jira API
 
-        Parameters:
+        Arguments:
             url          - Jira URL
             access_token - Personal Access Token to authenticate with
         """
@@ -39,7 +39,7 @@ class JiraConnection(object):
         Requires jira attribute to contain jira.JIRA
         (successful authentication using authenticate method)
 
-        Parameters:
+        Arguments:
             issues - List of Jira issues
             jql    - Jira Query Language query
 
@@ -84,7 +84,7 @@ class JiraConnection(object):
         """
         Checks if desired status is a valid status for this issue
 
-        Parameters:
+        Arguments:
             issue          - Jira issue
             desired_status - Desired status requested by jiav manifest
 
@@ -103,7 +103,7 @@ class JiraConnection(object):
         """
         Uploads an attachment to issue
 
-        Parameters:
+        Arguments:
             issue    - Jira issue
             filename - Path of the file to add as an attachment
         """
@@ -118,7 +118,7 @@ class JiraConnection(object):
         Update issue status using transition ID discovered by
         jiav.utils.jira.JiraConnection.check_if_status_is_valid
 
-        Parameters:
+        Arguments:
             issue         - Jira issue
             transition_id - Workflow transition ID to use when updating
                             the status of the issue
@@ -134,7 +134,7 @@ class JiraConnection(object):
         """
         Posts a comment with the result of verification process
 
-        Parameters:
+        Arguments:
             issue   - Jira issue
             comment - Comment to post
         """

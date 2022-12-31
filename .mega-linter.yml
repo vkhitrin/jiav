@@ -15,5 +15,5 @@ DISABLE_LINTERS:
   - RST_RST_LINT # Does not support sphinx
   - COPYPASTE_JSCPD
 PYTHON_PYRIGHT_PRE_COMMANDS:
-  - command: pip3 install poetry; poetry install
+  - command: pip3 install jiav
 VALIDATE_ALL_CODEBASE: true

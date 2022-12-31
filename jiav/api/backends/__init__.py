@@ -70,7 +70,7 @@ def import_backends():
 
     Returns:
         exposed_backends - List of valid backend objects based on inherited
-                           from BaseBackend object
+        from BaseBackend object
     """
     # TODO(vkhitrin): Perform additional checks if imported backend is valid
     # Init variables

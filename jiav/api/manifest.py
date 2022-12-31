@@ -51,7 +51,7 @@ class Manifest(object):
         """
         Validates verification step
 
-        Parameters:
+        Arguments:
             step - Verification step
 
         Returns True if successfully validated verification step
@@ -106,7 +106,7 @@ def validiate_text_contains_manifest(manifest=str()):
     Performs initial validation of text, checks if text is a valid
     manifest
 
-    Parameters:
+    Arguments:
         manifest - Text parsed from comment
 
     Returns a JSON object if initial manifest has passed schema validation
@@ -132,7 +132,7 @@ def validate_verifications_steps(manifest_obj=type(Manifest)):
     """
     Validates verification_steps from jiav manifest
 
-    Parameters:
+    Arguments:
         manifest_obj - jiav.api.manifest.Manifest object
     """
     steps = manifest_obj.verification_steps
@@ -154,7 +154,7 @@ def validate_manifest(text=type(str)):
     """
     Attempt to validate manifest from text
 
-    Parameters:
+    Arguments:
         text - Text containing potential manifest
 
     Returns:

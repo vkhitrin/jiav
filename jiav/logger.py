@@ -8,17 +8,17 @@ def subscribe_to_logger():
     Subscribes module to general logger
 
     Returns:
-        lg - Logger object for that module
+        logger - Logger object for that module
     """
     logger = logging.getLogger(__name__)
     return logger
 
 
-def configure_logger(debug=False):
+def configure_logger(debug=bool(False)):
     """
     Initializes a logger handler to log events
 
-    Paramas:
+    Arguments:
         debug - Enable debug mode during invocation
 
     Returns:

@@ -10,8 +10,9 @@ def prepare_summary(issues=list(), format="table"):
     """
     Prepares a summary or verified issues
 
-    Parameters:
+    Arguments:
         issues - Jira issues
+
         format - Output format
     """
     if format == "json":
@@ -26,8 +27,9 @@ def construct_dict(title=str(), issues=list()):
     """
     Constructs a dictionary from received items
 
-    Parameters:
+    Arguments:
         title - Name of the key
+
         issues - Jira issues that will populate the value
     """
     dictionary = dict({title.lower(): list()})
@@ -51,8 +53,9 @@ def print_json(title=str(), issues=list()):
     """
     Prints a JSON of issues
 
-    Parameters:
+    Arguments:
         title  - Name of the key
+
         issues - List of issues
     """
     print(json.dumps(construct_dict(title, issues)))
@@ -62,8 +65,9 @@ def print_yaml(title=str(), issues=list()):
     """
     Prints a YAML of issues
 
-    Parameters:
+    Arguments:
         title  - Name of the key
+
         issues - List of issues
     """
     print(
@@ -79,8 +83,9 @@ def print_table(title=str(), issues=list()):
     """
     Prints a table of issues
 
-    Parameters:
+    Arguments:
         title  - Title of the table
+
         issues - List of issues
     """
     table = PrettyTable()

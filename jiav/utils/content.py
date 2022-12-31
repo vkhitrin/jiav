@@ -22,7 +22,7 @@ def write_content_to_tempfile(content):
     """
     Write content to temporary file
 
-    Parameters:
+    Arguments:
         content - Content to write
 
     Returns:

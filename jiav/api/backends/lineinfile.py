@@ -20,10 +20,10 @@ class LineInFileBackend(BaseBackend):
     Checks if line is in file
 
     Attributes:
-        name = Backend name
-        schema = json_schema to be used to verify that the supplied step
-                 is valid according to the backends's requirements
-        step - Shell command
+        name   - Backend name
+        schema - json_schema to be used to verify that the supplied step is
+        valid according to the backends's requirements
+        step   - Backend excution instructions
     """
 
     def __init__(self):
@@ -35,7 +35,7 @@ class LineInFileBackend(BaseBackend):
     # Overrdie method of BaseBackend
     def execute_backend(self):
         """
-        Execute shell command
+        Execute backend
 
         Returns a namedtuple describing the jiav manifest execution
         """
