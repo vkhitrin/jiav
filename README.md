@@ -37,8 +37,8 @@ jiav:
 `jiav` allows developers to build custom backends; refer to the [documentation guide](docs/source/developing_backends.rst).  
 An example of a backends shipped externally:
 
-- [jiav-backend-ansible](https://github.com/vkhitrin/jiav-backend-ansible) **this is a risky backend since it allows users to run arbitrary code, and use it at your own risk.**
-- [jiav-backend-command](https://github.com/vkhitrin/jiav-backend-command) **this is a risky backend since it allows users to run arbitrary code, and use it at your own risk.**
+- [jiav-backend-ansible](https://github.com/vkhitrin/jiav-backend-ansible) **this is a risky backend since it allows users to run arbitrary code. Be cautious when enabling it.**
+- [jiav-backend-command](https://github.com/vkhitrin/jiav-backend-command) **This is a risky backend since it allows users to run arbitrary code. Be cautious when enabling it.**
 
 ## Requirements
 
