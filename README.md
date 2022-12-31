@@ -14,7 +14,7 @@ The output of verification steps is also not uploaded as attachments by default 
 
 ## General
 
-![jiav flow](docs/source/_static/Flow.jpeg)
+![jiav flow](https://jiav.readthedocs.io/en/latest/_images/Flow.jpeg)
 
 Jira Issues Auto Verification.  
 This tool aims to provide an auto-verification framework for Jira issues.  
@@ -50,11 +50,10 @@ Visit <https://jiav.readthedocs.io>.
 
 ## Installation
 
-This tool is not hosted on PyPI right now.  
 Install from remote:
 
 ```bash
-pip3 install git+https://github.com/vkhitrin/jiav
+pip3 install jiav
 ```
 
 Install from the local repository:

@@ -1,6 +1,7 @@
 # Ignore Python
 __pycache__
 .poetry.lock
+dist/
 # Ignore docs
 docs/build
 # Ignore macOS files

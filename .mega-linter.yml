@@ -16,3 +16,4 @@ DISABLE_LINTERS:
   - COPYPASTE_JSCPD
 PYTHON_PYRIGHT_PRE_COMMANDS:
   - command: pip3 install poetry; poetry install
+VALIDATE_ALL_CODEBASE: true
