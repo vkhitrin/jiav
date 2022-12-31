@@ -18,10 +18,13 @@ def prepare_jiav_comment(
     """
     Prepares jiav comment containing the execution result
 
-    Parameters:
+    Arguments:
         successful       - Result of jiav manifest execution
+
         status           - Desired status of verified issue
+
         manifest_comment - Jira comment containing jiav manifest
+
         attachment       - Attachment to uploaded if required
 
     Returns:
@@ -29,8 +32,6 @@ def prepare_jiav_comment(
     """
     generated_comment = list()
     # If jiav manifest execution is successful
-    # generated_comment.append("*Executed manifest on comment ID: "
-    #                          f"{manifest_comment}*")
     generated_comment.append(f"*Executed manifest on comment ID: {manifest_comment}*")
     if successful:
         generated_comment.append("manifest executed successfully")
@@ -81,14 +82,17 @@ def verify_issues(
     """
     Attempts to verify issues
 
-    Parameters:
-        issues                 - List of issues from
-                                 jiav.utils.jira.discover_valid_issues function
-        jira_connection        - Jira connection object defined by
-                                 jiav.utils.jira.JiraConnection
-        upload_attacment       - Upload attachment if requested
+    Arguments:
+        issues - List of issues from jiav.utils.jira.discover_valid_issues function
+
+        jira_connection - Jira connection object defined by
+        jiav.utils.jira.JiraConnection
+
+        upload_attacment - Upload attachment if requested
+
         public_comment_allowed - Allow manifest from public comments
-        dry_run                - Do not update issues
+
+        dry_run - Do not update issues
 
     Returns:
         verified_issues - List of issues that were successfully verified

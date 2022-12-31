@@ -19,6 +19,12 @@ class JiavCLI(object):
         self.arguments = list()
 
     def parse(self, in_args):
+        """
+        Parse arugmunets passed from command line
+
+        Arguments:
+            in_args - Arguments passed via command line
+        """
         self.arguments = in_args
         self.parser = argparse.ArgumentParser(
             description="Jira Issues Auto Verification Tool",
@@ -138,6 +144,9 @@ Optional arguments
         summary.prepare_summary(issues=verifeid_issues, format=args.format)
 
     def list_backends(self):
+        """
+        List installed backends
+        """
         self.parser.usage = """jiav [-v | --version] [-d | --debug] list-backends
 
 Global flags
@@ -150,6 +159,9 @@ List backends located in 'jiav/backends' directory
         print(jiav.constants.EXPOSED_BACKENDS)
 
     def validate_manifest(self):
+        """
+        Validate manifest
+        """
         self.parser.usage = """jiav [-v | --version] [-d | --debug] validate-manifest [<args>]
 
 Global flags
