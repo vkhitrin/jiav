@@ -19,6 +19,7 @@ workflow while focusing on ease of use and simplicity.
 
    user_guide
    design_philosophy
+   demo_try_it_yourself
 
 .. toctree::
    :maxdepth: 2

@@ -118,8 +118,7 @@ def verify_issues(
             # If issue is already in the desired status, we skip it
             if desired_status == issue.fields.status.name:
                 jiav_logger.info(
-                    f"""Issue {issue} is already verified with status
-{desired_status}"""
+                    f"""Issue {issue} is already in status {desired_status}"""
                 )
                 break
             transition_id = jira_connection.check_if_status_is_valid(
@@ -127,8 +126,7 @@ def verify_issues(
             )
             if not transition_id:
                 jiav_logger.error(
-                    f"""Desired status {desired_status} is not valid in this
-instance"""
+                    f"""Desired status {desired_status} is not valid in this instance"""
                 )
                 break
             # Execute according to jiav request

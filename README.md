@@ -44,9 +44,13 @@ An example of a backends shipped externally:
 
 `jiav` requires Python `>= 3.8`.
 
+Personal Access Tokens (PATs) are supported [`>=8.14`](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html)
+
 ## Documentation
 
 Visit <https://jiav.readthedocs.io>.
+
+If you do not have access to a Jira instance or wish to attempt this tool in an isolated environment, refer to [demo](https://jiav.readthedocs.io/latest/demo_try_it_yourself.html).
 
 ## Installation
 
