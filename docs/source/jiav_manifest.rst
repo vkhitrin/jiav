@@ -12,6 +12,7 @@ automatic verification workflow:
 .. code::
 
    jiav:
+     verified_status: "Done"
      verification_steps:
        <verification_steps>
 

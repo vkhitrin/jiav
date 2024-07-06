@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jiav"
-version = "0.1.1"
+version = "0.2.1"
 description = "Jira Issues Auto Verification"
 authors = ["Vadim Khitrin <me@vkhitrin.com>"]
 license = "BSD-3-Clause"

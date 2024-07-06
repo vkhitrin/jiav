@@ -164,8 +164,8 @@ basic shell commands.
       jiav list-backends
       {'example': <class 'jiav.api.backends.example.ExampleBackend'>
 
-#. Create a test manifest `/tmp/example_manifest.yaml`, and verify that
-   it is valid
+#. Create a test manifest ``/tmp/example_manifest.yaml``, and verify
+   that it is valid
 
    .. code:: shell
 
@@ -180,6 +180,7 @@ basic shell commands.
               - test
             rc: 0
       EOF
+      jiav validate-manifest --from-file="/tmp/example_manifest.yaml"
 
    **View full** :download:`jiav/api/backends/example_manifest.yaml
    <_static/example_manifest.yaml>`.

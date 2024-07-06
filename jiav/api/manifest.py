@@ -96,9 +96,9 @@ class Manifest(object):
                 break
         self.execution_output = execution_output
         if self.successful:
-            jiav_logger.info("Manifest executed successfully")
+            jiav_logger.info("Manifest was executed successfully")
         else:
-            jiav_logger.error("Manifest failed to execute")
+            jiav_logger.error("Manifest has failed to execute")
 
 
 def validiate_text_contains_manifest(manifest=str()):

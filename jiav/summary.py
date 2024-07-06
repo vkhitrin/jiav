@@ -103,14 +103,8 @@ def print_table(title=str(), issues=list()):
                 issue,
                 issue.fields.summary,
                 issue.fields.status,
-                (
-                    f"{issue.fields.assignee.displayName} "
-                    f"<{issue.fields.assignee.name}>"
-                ),
-                (
-                    f"{issue.fields.reporter.displayName} "
-                    f"<{issue.fields.reporter.name}>"
-                ),
+                (f"{issue.fields.assignee.displayName} "),
+                (f"{issue.fields.reporter.displayName} "),
                 issue.fields.comment.total,
             ]
         )

@@ -6,9 +6,12 @@
  Jira
 ******
 
-To leverage ``jiav``, a user must have generated a Jira `personal access
+To use ``jiav``, a user must have generated a Jira `personal access
 token
-<https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html>`_.
+<https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html>`_
+when using a self-hosted instance or an `API token
+<https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/>`_
+when using a Jira cloud instance.
 
 Every Jira instance is unique and may contain various attributes, the
 user must be familiar with their Jira instance.
@@ -37,7 +40,7 @@ Global Flags
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav --version
 
@@ -50,7 +53,7 @@ Global Flags
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav --debug
 
@@ -68,22 +71,36 @@ Verifies Jira issues.
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav verify --format json
+
+-u, --username
+--------------
+
+**Required**: False
+
+**Description**: Username to authenticate with for Jira Cloud instance
+
+**Example**:
+
+.. code:: bash
+
+   jiav verify --username test@example.com
 
 -a, --access-token
 ------------------
 
 **Required**: True
 
-**Description**: Authenticate with Jira using a personal access token
+**Description**: Token (API token for Jira Cloud or Personal Access
+Token for self-hosted Jira)
 
 **Example**:
 
-.. code::
+.. code:: bash
 
-   jiav verify --access-api-key QRaG8wgBkSGRBJfx5MKNvKMoVpxao2MUxI68MqLo
+   jiav verify --access-token QRaG8wgBkSGRBJfx5MKNvKMoVpxao2MUxI68MqLo
 
 -j, --jira
 ----------
@@ -94,7 +111,7 @@ Verifies Jira issues.
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav verify --jira http://localhost
 
@@ -107,7 +124,7 @@ Verifies Jira issues.
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav verify --issue KEY-1 --issue KEY-2
 
@@ -122,7 +139,7 @@ query
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav verify --query 'issue="KEY-1"'
 
@@ -135,7 +152,7 @@ query
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav verify --allow-public-comments
 
@@ -149,7 +166,7 @@ query
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav verify --allow-public-comments
 
@@ -162,7 +179,7 @@ query
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav verify --dry-run
 
@@ -173,7 +190,7 @@ List supported backends
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav list-backends
 
@@ -191,6 +208,6 @@ Validates manifest
 
 **Example**:
 
-.. code::
+.. code:: bash
 
    jiav --debug validate-manifest --from-file='/path/to/file'
