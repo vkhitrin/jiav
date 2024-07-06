@@ -6,7 +6,7 @@
  jiav Manifest
 ***************
 
-``jiav`` manifest is a YAML-based input used by the tool to achieve
+``jiav`` manifest is a YAML-based input used by the tool to achieve an
 automatic verification workflow:
 
 .. code::
@@ -15,8 +15,8 @@ automatic verification workflow:
      verification_steps:
        <verification_steps>
 
-Goals of ``jiav`` manifest:
+Goals of a ``jiav`` manifest:
 
--  Human-readable and machine-readable
--  Extendable
--  Robust
+-  Human-readable and machine-readable.
+-  Extendable.
+-  Robust.

@@ -5,13 +5,12 @@ import subprocess
 # Import namedtuple
 from collections import namedtuple
 
+# Import global jiav logger
+from jiav import logger
 from jiav.api.backends import BaseBackend
 
 # Import JSON schema to be used in validation
 from jiav.api.schemas.example import schema
-
-# Import global jiav logger
-from jiav.utils import logger
 
 # Subsribe to global logger
 jiav_logger = logger.subscribe_to_logger()

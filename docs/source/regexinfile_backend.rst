@@ -7,7 +7,7 @@
 **********
 
 ``jiav`` can look for a `regex (regular expression)
-<https://en.wikipedia.org/wiki/Regular_expression>`_ in file to verify
+<https://en.wikipedia.org/wiki/Regular_expression>`_ in files to verify
 issues.
 
 Regex is checked using `re.search
@@ -25,6 +25,7 @@ Look for a regex in a file:
    .. code:: yaml
 
       jiav:
+        verification_status: "Done"
         verification_steps:
           - name: Search for a regex in file
             backend: lineinfile
@@ -37,7 +38,7 @@ Attributes
 path
 ----
 
-Path to file to read from.
+Path to a file.
 
 regex
 -----

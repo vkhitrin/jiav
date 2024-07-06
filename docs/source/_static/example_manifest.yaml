@@ -1,0 +1,10 @@
+---
+jiav:
+  verified_status: "Done"
+  verification_steps:
+    - name: test backend
+      backend: example
+      cmd:
+        - echo
+        - test
+      rc: 0

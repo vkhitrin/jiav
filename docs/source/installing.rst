@@ -8,17 +8,13 @@
 
 .. warning::
 
-   Only Python3.8 and above is supported
-
-Make sure Python3 and pip are installed on the system level or inside a
-`virtual environment <https://virtualenv.pypa.io/en/latest/>`_
-(recommended).
+   Only Python3.8 and above is supported.
 
 **************
  Installation
 **************
 
-Install from source
+Install From Source
 ===================
 
 Clone repository from remote:
@@ -26,32 +22,52 @@ Clone repository from remote:
 .. code::
 
    git clone https://github.com/vkhitrin/jiav.git
+   cd jiav
 
-Install ``jiav`` from cloned repo:
+Install ``jiav`` from cloned repo using ``pip``:
 
 .. code::
 
-   cd jiav
    pip3 install .
 
-Install from remote
-===================
-
-.. note::
-
-   jiav is currently not hosted on PyPI
-
-Install from remote repository:
+Or `pipx <https://pipx.pypa.io>`_:
 
 .. code::
 
-   pip3 install git+https://github.com/vkhitrin/jiav
+   pipx install .
+
+As part of development, use `poetry <https://python-poetry.org>`_:
+
+.. code::
+
+   poetry install --with=main,dev
+
+Install From Remote
+===================
+
+Install from `PyPi <https://pypi.org>`_ using ``pip3``:
+
+.. code::
+
+   pip3 install jiav
+
+Or ``pipx``:
+
+.. code::
+
+   pipx install jiav
 
 Uninstall
 =========
 
-In order to uninstall the tool from system:
+Uninstall using ``pip3``:
 
 .. code::
 
    pip3 uninstall jiav
+
+Or ``pipx``:
+
+.. code::
+
+   pipx uninstall jiav

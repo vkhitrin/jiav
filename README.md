@@ -1,11 +1,12 @@
 # jiav
 
-This repository is a **Proof of Concept.**
+> [!NOTE]
+> This repository is a **Proof of Concept.**
 
 ## Limitations And Words Of Caution
 
-**This tool is only tested against self-hosted (data center version) Jira.**  
-I have no access to a cloud Jira instance.
+> [!WARNING]
+> **This tool currently only works with self-hosted (data center version) Jira.**  
 
 Since this tool executes commands locally, we should avoid trusting public comments as much as possible.  
 It will default to scanning only private comments (regardless of the visibility group). It is possible to read from public comments **if you understand the potential risk, this might cause to your systems**.
@@ -54,16 +55,39 @@ If you do not have access to a Jira instance or wish to attempt this tool in an 
 
 ## Installation
 
-Install from remote:
+### Remote
+
+Install from remote using `pip3`:
 
 ```bash
 pip3 install jiav
 ```
 
-Install from the local repository:
+Install from remote using `pipx`:
+
+```bash
+pipx install jiav
+```
+
+### Local
+
+Clone the local repository:
+
+```bash
+git clone https://github.com/vkhitrin/jiav.git
+cd jiav
+```
+
+Install using `pip3`:
 
 ```bash
 pip3 install .
+```
+
+Install using `pipx`:
+
+```bash
+pipx install .
 ```
 
 ## Usage
@@ -122,7 +146,6 @@ jiav —debug validate-manifest —from-file=/path/to/file
 To install in development mode, use `poetry`:
 
 ```bash
-pip3 install poetry
 poetry install --with=main,dev
 ```
 

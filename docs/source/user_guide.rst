@@ -6,26 +6,26 @@
  Jira
 ******
 
-To leverage ``jiav``, a user must have generated Jira's `personal access
+To leverage ``jiav``, a user must have generated a Jira `personal access
 token
 <https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html>`_.
 
 Every Jira instance is unique and may contain various attributes, the
-user must be familiar with Jira.
+user must be familiar with their Jira instance.
 
-All communication with Jira is through `jira
+All communication with Jira is through the `jira
 <https://pypi.org/project/jira/>`_ python module.
 
 *****
  CLI
 *****
 
-After following the :ref:`installing:Installation Guide`, ``jiav``
+After following the :ref:`installing:Installation Guide`, the ``jiav``
 command will be available.
 
 There are several sub-commands available.
 
-Global flags
+Global Flags
 ============
 
 -v, --version
@@ -33,7 +33,7 @@ Global flags
 
 **Required**: False
 
-**Description**: Print version
+**Description**: Prints version
 
 **Example**:
 
@@ -77,7 +77,7 @@ Verifies Jira issues.
 
 **Required**: True
 
-**Description**: Authenticate with Jira personal access token
+**Description**: Authenticate with Jira using a personal access token
 
 **Example**:
 
@@ -90,9 +90,7 @@ Verifies Jira issues.
 
 **Required**: True
 
-**Mutually exclusive**: False
-
-**Description**: URL of Jira instance to authenticate with
+**Description**: URL of a Jira instance to authenticate with
 
 **Example**:
 
@@ -146,8 +144,8 @@ query
 
 **Required**: False
 
-**Description**: Uploads execution output, **NOT SAFE REFER** TO
-`JRASERVER-3893 <https://jira.atlassian.com/browse/JRASERVER-3893>`_.
+**Description**: Uploads execution output, **NOT SAFE**, refer to
+`JRASERVER-3893 <https://jira.atlassian.com/browse/JRASERVER-3893>`_
 
 **Example**:
 
@@ -188,8 +186,6 @@ Validates manifest
 -----------
 
 **Required**: True
-
-**Mutually exclusive**: False
 
 **Description**: Validates manifest from file
 
