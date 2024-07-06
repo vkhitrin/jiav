@@ -15,11 +15,33 @@ class jiavException(Exception):
 
 class NoJiraRestAPIEndpoint(jiavException):
     """
-    Raised when failed to fetch content because of permissions
+    Raised when the provided URL is not a valid Jira Rest API endpoint
     """
 
     def __init__(self, url, endpoint):
         message = f"Provided url '{url}' does not serve Jira Rest API at '{endpoint}'"
+        super().__init__(message)
+
+
+class JiraMissingCredentials(jiavException):
+    """
+    Raised when user did not provide all required credentials
+    """
+
+    def __init__(self, missing_credentials):
+        message = f"{missing_credentials} is required for this instance"
+        super().__init__(message)
+
+
+class JiraAuthenticationFailed(jiavException):
+    """
+    Raised when user did not authenticate correctly with Jira instance
+    """
+
+    def __init__(self, url):
+        message = (
+            f"Failed to authenticate with instance {url}, please check your credentials"
+        )
         super().__init__(message)
 
 

@@ -5,9 +5,6 @@
 
 ## Limitations And Words Of Caution
 
-> [!WARNING]
-> **This tool currently only works with self-hosted (data center version) Jira.**  
-
 Since this tool executes commands locally, we should avoid trusting public comments as much as possible.  
 It will default to scanning only private comments (regardless of the visibility group). It is possible to read from public comments **if you understand the potential risk, this might cause to your systems**.
 

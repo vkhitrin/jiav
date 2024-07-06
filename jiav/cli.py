@@ -79,6 +79,8 @@ Global flags
 
 Mandatory arguments
     -j --jira                      instance URL
+    -u --username                  Jira Cloud username (not required for self-hosted
+                                   instances)
     -a --access-token              the personal access token
 
 Mutual exclusive arguments related to issues
@@ -87,7 +89,7 @@ Mutual exclusive arguments related to issues
 
 Optional arguments
     -f --format                    output format
-    --upload-attachments-unsafe    uploads attachment of execution, this is not
+    --upload-attachment-unsafe     uploads attachment of execution, this is not
                                    safe since all users who can access the
                                    ticket will be able to view it; refer to:
                                    https://jira.atlassian.com/browse/JRASERVER-3893
@@ -108,8 +110,9 @@ Optional arguments
         self.parser.add_argument("--upload-attachment-unsafe", action="store_true")
         self.parser.add_argument("--allow-public-comments", action="store_true")
         self.parser.add_argument("--dry-run", action="store_true")
-        login_group = self.parser.add_mutually_exclusive_group(required=True)
-        login_group.add_argument("-a", "--access-token", type=str)
+        login_group = self.parser.add_argument_group(title="Login")
+        login_group.add_argument("-a", "--access-token", type=str, required=True)
+        login_group.add_argument("-u", "--username", type=str)
         arg_group = self.parser.add_mutually_exclusive_group(required=True)
         arg_group.add_argument("-i", "--issue", action="append", type=str)
         arg_group.add_argument("-q", "--query", type=str)
@@ -129,7 +132,11 @@ Optional arguments
         if args.allow_public_comments:
             jiav_logger.warn("Will include public comments in search")
         # Try to authenticate with Jira
-        jira_connection = JiraConnection(url=args.jira, access_token=args.access_token)
+        jira_connection = JiraConnection(
+            url=args.jira,
+            username=args.username,
+            access_token=args.access_token,
+        )
         # Fetch issues from authenticated Jira instance
         issues = jira_connection.fetch_issues(issues=args.issue, jql=args.query)
         # Iterate over valid issues and attempt to update and verify them

@@ -16,20 +16,42 @@ class JiraConnection(object):
         jira - jira.JIRA object if authenticated successfully.
     """
 
-    def __init__(self, url=str(), access_token=str()):
+    def __init__(self, url=str(), username=str(), access_token=str()):
         """
         Attempts to authenticate with Jira API
 
         Arguments:
-            url          - Jira URL
-            access_token - Personal Access Token to authenticate with
+            url           - Jira URL
+            instance_type - Instance type (cloud or hosted)
+            access_token  - Personal Access Token to authenticate with
         """
-        # Try to connect to Jira using a token
+        # Initiall connection is used to discover details about the Jira instance
         try:
-            self.jira = JIRA(server=url, token_auth=access_token)
+            self.jira = JIRA(server=url)
         except jira.exceptions.JIRAError as e:
             if "JiraError HTTP 404 url" in str(e):
                 raise exceptions.NoJiraRestAPIEndpoint(self.jira, e.url) from None
+            else:
+                raise exceptions.JiraUnhandledException()
+        instance_type = self.jira.deploymentType
+        # Authenticate with a Jira cloud instance
+        if instance_type == "Cloud":
+            if not username:
+                raise exceptions.JiraMissingCredentials("Username") from None
+            self.jira = JIRA(server=url, basic_auth=(username, access_token))
+        # Authenticate with a self-hosted Jira instance
+        elif instance_type == "Server":
+            if username:
+                jiav_logger.warning(
+                    "Username argument is omitted for self-hosted Jira instances"
+                )
+            self.jira = JIRA(server=url, token_auth=access_token)
+        # Check if authentication was successful
+        try:
+            self.jira.myself()
+        except jira.exceptions.JIRAError as e:
+            if "JiraError HTTP 401 url" in str(e):
+                raise exceptions.JiraAuthenticationFailed(url) from None
             else:
                 raise exceptions.JiraUnhandledException()
 
@@ -126,7 +148,7 @@ class JiraConnection(object):
         try:
             self.jira.transition_issue(issue, transition=transition_id)
             issue.update()
-            jiav_logger.info(f"Updated status for {issue}")
+            jiav_logger.info(f"Updated status for '{issue}'")
         except jira.exceptions.JIRAError:
             raise exceptions.JiraUnhandledException()
 
@@ -140,6 +162,6 @@ class JiraConnection(object):
         """
         try:
             self.jira.add_comment(issue, comment)
-            jiav_logger.info(f"Posted comment in {issue}")
+            jiav_logger.info(f"Posted comment in '{issue}'")
         except jira.exceptions.JIRAError:
             raise exceptions.JiraUnhandledException()
