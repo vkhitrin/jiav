@@ -17,7 +17,7 @@ classifiers = [
     'Operating System :: MacOS',
     'Programming Language :: Python :: 3 :: Only',
     'Programming Language :: Python :: 3.8',
-    'Topic :: Utilities'
+    'Topic :: Utilities',
 ]
 
 
@@ -36,6 +36,7 @@ jiav = "jiav:cli.main"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
+esbonio = "^0.16.4"
 
 [build-system]
 requires = ["poetry-core"]
