@@ -2,11 +2,12 @@
  jiav Backends
 ###############
 
-Backends in ``jiav`` are used to execute the user's request.
+Backends in ``jiav`` are used to execute various verification steps.
 
-Each backend represents a different way of executing user-defined logic.
+Each backend represents a different way of executing a user-defined
+logic.
 
-Developers can develop custom backends for ``jiav``, refer to
+Developers are able to extend ``jiav`` with custom backends, refer to
 :ref:`developing_backends:Developing Backends`.
 
 .. toctree::

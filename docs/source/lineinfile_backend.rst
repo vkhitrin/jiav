@@ -6,7 +6,7 @@
  Overview
 **********
 
-``jiav`` can look for a line in file to verify issues.
+``jiav`` can look for a line in files to verify issues.
 
 *********
  Example
@@ -20,6 +20,7 @@ Look for a single line in a file:
    .. code:: yaml
 
       jiav:
+        verification_status: "Done"
         verification_steps:
           - name: Search for line in file
             backend: lineinfile
@@ -32,7 +33,7 @@ Attributes
 path
 ----
 
-Path to file to read from.
+Path to a file.
 
 line
 ----

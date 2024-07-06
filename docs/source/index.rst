@@ -2,7 +2,13 @@
  About jiav
 ############
 
-``jiav`` is a python based auto verification tool.
+.. warning::
+
+   Currently, ``jiav`` is only supported on self-hosted (server,
+   datacenter) editions of Jira.
+
+``jiav`` is a `Python <https://www.python.org>`_ based auto verification
+tool for `Jira <https://www.atlassian.com/software/jira>`_.
 
 ``jiav``'s primary goal is to provide a robust auto-verification
 workflow while focusing on ease of use and simplicity.

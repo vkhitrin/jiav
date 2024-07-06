@@ -23,22 +23,21 @@ Each backend should inherit from ``BaseBackend`` object under the path
 There are several methods that are inherited from ``BaseBackend``, some
 of them will be overridden when developing a custom backend.
 
-All backends should accept various attributes that are validated
-according to `JSON schema <https://json-schema.org/>`_. Schemas are
-stored under the ``jiav/api/schemas/`` directory.
+All backends should accept various attributes that are validated by a
+`JSON schema <https://json-schema.org/>`_. Schemas are stored under the
+``jiav/api/schemas/`` directory.
 
-*************************************
- Developing a custom example backend
-*************************************
+*****************************************
+ Developing A Custom ``example`` Backend
+*****************************************
 
-In this section, we will create an example backend that executes basic
-shell commands.
+In this section, we will create an ``example`` backend that executes
+basic shell commands.
 
-First, we'll create a python file containing our code,
-``jiav/api/backends/example_backend.py``.
+#. Create a python file containing our code,
+   ``jiav/api/backends/example.py``.
 
-We will import all of the required and recommended ``jiav``
-dependencies:
+#. Import all of the required and recommended ``jiav`` dependencies:
 
    .. code:: python
 
@@ -57,24 +56,24 @@ dependencies:
       # Import subprocess
       import subprocess
 
-The backend should also subscribe to the global logger to allow debug
-info:
+   The backend should also subscribe to the global logger to allow debug
+   info:
 
    .. code:: python
 
       # Subsribe to global logger
       jiav_logger = logger.subscribe_to_logger()
 
-In the current implementation of backends, we need to create a mock step
-that will be used during JSON schema validation when constructing an
-initial object:
+#. In the current implementation of backends, we need to create a mock
+   step that will be used during JSON schema validation when
+   constructing an initial object:
 
    .. code:: python
 
       # Mock step that will be used when initializing an initial object
       MOCK_STEP = {"cmd": "true", "rc": 0}
 
-Now we can create our backend object:
+#. Create our backend object:
 
    .. code:: python
 
@@ -93,17 +92,15 @@ Now we can create our backend object:
                                self.schema,
                                self.step)
 
-We override the ``execute_backend`` method with our backend's logic.
+   We override the ``execute_backend`` method with our backend's logic.
 
-As of now, jiav requires the backend to return a ``namedtuple`` with the
-following keys:
+#. jiav requires the backend to return a ``namedtuple`` with the
+   following keys:
 
--  successful - Boolean that represents if the backend executed
-   successfully
-
--  output - String/List containing execution output
-
--  errors - String/List containing errors
+   -  ``successful`` - Boolean that represents if the backend executed
+      successfully.
+   -  ``output`` - String/List containing execution output.
+   -  ``errors`` - String/List containing errors.
 
    .. code:: python
 
@@ -142,11 +139,11 @@ following keys:
           result = namedtuple("result", ["successful", "output", "errors"])
           self.result = result(successful, output, errors)
 
-**View full** :download:`jiav/api/backends/example_backend.py
-<_static/example_backend.py>`.
+   **View full** :download:`jiav/api/backends/example_backend.py
+   <_static/example_backend.py>`.
 
-We will also create a schema file that will validate the backend
-attributes supplied by the user, ``jiav/api/schema/example_schema.py``.
+#. We will also create a schema file that will validate the backend
+   attributes supplied by the user, ``jiav/api/schema/example.py``.
 
    .. code:: python
 
@@ -157,17 +154,32 @@ attributes supplied by the user, ``jiav/api/schema/example_schema.py``.
           "additionalProperties": False,
       }
 
-**View full** :download:`jiav/api/backends/example_schema.py
-<_static/example_schema.py>`.
+   **View full** :download:`jiav/api/backends/example_schema.py
+   <_static/example_schema.py>`.
 
-Now we will be able to leverage our ``example`` backend in the following
-way:
+#. Verify ``example`` backend is registered in ``jiav``:
 
-   .. code:: yaml
+   .. code:: bash
 
+      jiav list-backends
+      {'example': <class 'jiav.api.backends.example.ExampleBackend'>
+
+#. Create a test manifest `/tmp/example_manifest.yaml`, and verify that
+   it is valid
+
+   .. code:: shell
+
+      cat << EOF > /tmp/example_manifest.yaml
       jiav:
+        verified_status: "Done"
         verification_steps:
           - name: test backend
             backend: example
-            cmd: echo test
+            cmd:
+              - echo
+              - test
             rc: 0
+      EOF
+
+   **View full** :download:`jiav/api/backends/example_manifest.yaml
+   <_static/example_manifest.yaml>`.
