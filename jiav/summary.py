@@ -34,13 +34,16 @@ def construct_dict(title=str(), issues=list()):
     """
     dictionary = dict({title.lower(): list()})
     for issue in issues:
+        issue_assignee = (
+            issue.fields.assignee.displayName if issue.fields.assignee else "Unassigned"
+        )
         dictionary[title].append(
             dict(
                 {
                     "issue": issue.key,
                     "summary": issue.fields.summary,
                     "status": issue.fields.status.name,
-                    "assignee": issue.fields.assignee.displayName,
+                    "assignee": issue_assignee,
                     "reporter": issue.fields.reporter.displayName,
                     "comments": issue.fields.comment.total,
                 }
@@ -98,12 +101,15 @@ def print_table(title=str(), issues=list()):
         "Comments",
     ]
     for issue in issues:
+        issue_assignee = (
+            issue.fields.assignee.displayName if issue.fields.assignee else "Unassigned"
+        )
         table.add_row(
             [
                 issue,
                 issue.fields.summary,
                 issue.fields.status,
-                (f"{issue.fields.assignee.displayName} "),
+                (f"{issue_assignee} "),
                 (f"{issue.fields.reporter.displayName} "),
                 issue.fields.comment.total,
             ]
