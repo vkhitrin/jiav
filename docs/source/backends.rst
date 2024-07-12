@@ -18,3 +18,4 @@ Developers are able to extend ``jiav`` with custom backends, refer to
    lineinfile_backend
    regexinfile_backend
    command_backend
+   jira_issue_backend

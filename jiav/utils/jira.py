@@ -16,6 +16,13 @@ class JiraConnection(object):
         jira - jira.JIRA object if authenticated successfully.
     """
 
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(JiraConnection, cls).__new__(cls)
+        return cls._instance
+
     def __init__(self, url=str(), username=str(), access_token=str()):
         """
         Attempts to authenticate with Jira API
@@ -26,34 +33,35 @@ class JiraConnection(object):
             access_token  - Personal Access Token to authenticate with
         """
         # Initiall connection is used to discover details about the Jira instance
-        try:
-            self.jira = JIRA(server=url)
-        except jira.exceptions.JIRAError as e:
-            if "JiraError HTTP 404 url" in str(e):
-                raise exceptions.NoJiraRestAPIEndpoint(self.jira, e.url) from None
-            else:
-                raise exceptions.JiraUnhandledException()
-        instance_type = self.jira.deploymentType
-        # Authenticate with a Jira cloud instance
-        if instance_type == "Cloud":
-            if not username:
-                raise exceptions.JiraMissingCredentials("Username") from None
-            self.jira = JIRA(server=url, basic_auth=(username, access_token))
-        # Authenticate with a self-hosted Jira instance
-        elif instance_type == "Server":
-            if username:
-                jiav_logger.warning(
-                    "Username argument is omitted for self-hosted Jira instances"
-                )
-            self.jira = JIRA(server=url, token_auth=access_token)
-        # Check if authentication was successful
-        try:
-            self.jira.myself()
-        except jira.exceptions.JIRAError as e:
-            if "JiraError HTTP 401 url" in str(e):
-                raise exceptions.JiraAuthenticationFailed(url) from None
-            else:
-                raise exceptions.JiraUnhandledException()
+        if not hasattr(self, "jira"):
+            try:
+                self.jira = JIRA(server=url)
+            except jira.exceptions.JIRAError as e:
+                if "JiraError HTTP 404 url" in str(e):
+                    raise exceptions.NoJiraRestAPIEndpoint(self.jira, e.url) from None
+                else:
+                    raise exceptions.JiraUnhandledException()
+            instance_type = self.jira.deploymentType
+            # Authenticate with a Jira cloud instance
+            if instance_type == "Cloud":
+                if not username:
+                    raise exceptions.JiraMissingCredentials("Username") from None
+                self.jira = JIRA(server=url, basic_auth=(username, access_token))
+            # Authenticate with a self-hosted Jira instance
+            elif instance_type == "Server":
+                if username:
+                    jiav_logger.warning(
+                        "Username argument is omitted for self-hosted Jira instances"
+                    )
+                self.jira = JIRA(server=url, token_auth=access_token)
+            # Check if authentication was successful
+            try:
+                self.jira.myself()
+            except jira.exceptions.JIRAError as e:
+                if "JiraError HTTP 401 url" in str(e):
+                    raise exceptions.JiraAuthenticationFailed(url) from None
+                else:
+                    raise exceptions.JiraUnhandledException()
 
     def fetch_issues(self, issues=list(), jql=str()):
         """
