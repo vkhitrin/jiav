@@ -5,6 +5,7 @@ import pkgutil
 import sys
 from importlib import import_module
 from pathlib import Path
+from typing import List, Tuple
 
 import jsonschema
 import jsonschema.exceptions
@@ -26,14 +27,14 @@ class BaseBackend(object):
         step   - Instructions to perform according to backend
     """
 
-    def __init__(self, name=str(), schema=dict({}), step=dict({}), result=tuple()):
+    def __init__(self, name: str, schema: dict, step: dict) -> None:
         self.name = name
-        self.valid = False
+        self.valid: bool = False
         self.schema = schema
         self.step = step
-        self.result = result
+        self.result: Tuple
 
-    def validate_schema(self):
+    def validate_schema(self) -> bool:
         """
         Validates that the verification step is obeying the required
         schema
@@ -46,7 +47,7 @@ class BaseBackend(object):
             raise exceptions.InvalidManifestException(e)
         return True
 
-    def execute_backend(self):
+    def execute_backend(self) -> None:
         """
         Executes backend
 
@@ -59,10 +60,10 @@ class BaseBackend(object):
             "Unable to execute BaseBackend, please invoke from real backend",
             "or backend does not override 'execute_backend' method",
         )
-        return False
+        return None
 
 
-def import_backends():
+def import_backends() -> List[BaseBackend]:
     """
     Imports all valid backends from jiav/api/backends directory
 
@@ -77,7 +78,7 @@ def import_backends():
     backend_classes = list()
     exposed_backends = dict({})
 
-    for (_, name, _) in pkgutil.iter_modules([str(Path(__file__).parent)]):
+    for _, name, _ in pkgutil.iter_modules([str(Path(__file__).parent)]):
         # Import all modules in directory
         imported_module = import_module("." + name, package=__name__)
         # Iterate over imported modules

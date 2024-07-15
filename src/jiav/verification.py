@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 
+from jira import Issue
 import jiav.constants
 from jiav import exceptions, logger
 from jiav.api import manifest
 from jiav.utils import content
 from jiav.utils.jira import JiraConnection
+from typing import List, Tuple, Union
 
 jiav_logger = logger.subscribe_to_logger()
 
 
 def prepare_jiav_comment(
-    successful=bool(False),
-    status=str(),
-    manifest_comment=None,
-    upload_attachment=bool(False),
-):
+    status: str,
+    manifest_comment: str,
+    successful: bool = False,
+    upload_attachment: bool = False,
+) -> str:
     """
     Prepares jiav comment containing the execution result
 
@@ -27,7 +29,8 @@ def prepare_jiav_comment(
     Returns:
         generated_comment - Comment that will be posted
     """
-    generated_comment, text_body = list(), list()
+    generated_comment: List = []
+    text_body: List = []
     # If jiav manifest execution is successful
     text_body.append(f"Executed manifest on comment ID: *{{{{{manifest_comment}}}}}*.")
     if successful:
@@ -56,9 +59,11 @@ def prepare_jiav_comment(
     return "\n".join(generated_comment)
 
 
-def process_comments(comments=list(), allow_public_comments=bool(False)):
-    valid_manifest = None
-    jiav_comment = None
+def process_comments(
+    comments: List, allow_public_comments: bool = False
+) -> Tuple[Union[manifest.Manifest, bool], str]:
+    valid_manifest: Union[manifest.Manifest, bool] = False
+    jiav_comment: str = ""
     # Iterate over comments in reverse order (from last to first)
     for idx, comment in reversed(list(enumerate(comments))):
         jiav_logger.debug(f"Looking at comment #{idx}")
@@ -80,12 +85,12 @@ def process_comments(comments=list(), allow_public_comments=bool(False)):
 
 
 def verify_issues(
-    issues=list(),
-    jira_connection=type(JiraConnection),
-    upload_attachment=bool(False),
-    allow_public_comments=bool(False),
-    dry_run=bool(False),
-):
+    jira_connection: JiraConnection,
+    issues: List[Issue] = [],
+    upload_attachment: bool = False,
+    allow_public_comments: bool = False,
+    dry_run: bool = False,
+) -> List[Issue]:
     """
     Attempts to verify issues
 
@@ -105,14 +110,14 @@ def verify_issues(
         verified_issues - List of issues that were successfully verified
     """
     # Init variables
-    verified_issues = list()
+    verified_issues: List[Issue] = []
     if dry_run:
         jiav_logger.info("Will not update issues, running as dry run")
     # Iterate over issues
     for issue in issues:
-        manifest_comment = None
-        jiav_manifest = None
-        desired_status = str()
+        jiav_manifest: Union[manifest.Manifest, bool] = False
+        manifest_comment: str = ""
+        desired_status: str = ""
         jiav_logger.info(f"Looking at issue '{issue}'")
         jiav_manifest, manifest_comment = process_comments(
             comments=issue.fields.comment.comments,
@@ -122,7 +127,7 @@ def verify_issues(
         if isinstance(jiav_manifest, manifest.Manifest):
             jiav_logger.info(f"Valid manifest was found in issue '{issue}'")
             desired_status = jiav_manifest.verified_status
-            current_status = issue.fields.status.name
+            current_status: str = issue.fields.status.name
             # If issue is already in the desired status, we skip it
             if desired_status == current_status:
                 jiav_logger.info(

@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 import logging
+from logging import Logger
 
 
-def subscribe_to_logger():
+def subscribe_to_logger() -> Logger:
     """
     Subscribes module to general logger
 
@@ -14,7 +15,7 @@ def subscribe_to_logger():
     return logger
 
 
-def configure_logger(debug=bool(False)):
+def configure_logger(debug: bool = False) -> Logger:
     """
     Initializes a logger handler to log events
 

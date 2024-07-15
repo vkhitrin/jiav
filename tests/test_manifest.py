@@ -24,11 +24,11 @@ from jiav.api import manifest
         ),
     ],
 )
-def test_validate_manifest(manifest_file, validation):
+def test_validate_manifest(manifest_file: str, mock_validated_manifest: manifest.Manifest) -> None:
     with open(manifest_file) as f:
         content = f.read()
         try:
             validated_manifest = manifest.validate_manifest(text=content)
         except jiav.exceptions.InvalidManifestException:
             validated_manifest = False
-        assert type(validated_manifest) == type(validation)
+        assert type(validated_manifest) is type(mock_validated_manifest)

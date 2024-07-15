@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 
 import json
+from typing import List
 
 import yaml
+from jira import Issue
 from prettytable import SINGLE_BORDER, PrettyTable
 
 
-def prepare_summary(issues=list(), format="table"):
+def prepare_summary(issues: List[Issue] = [], format: str = "table") -> None:
     """
     Prepares a summary or verified issues
 
@@ -23,7 +25,7 @@ def prepare_summary(issues=list(), format="table"):
         print_table("Verified Issues", issues)
 
 
-def construct_dict(title=str(), issues=list()):
+def construct_dict(title: str, issues: List[Issue]) -> dict:
     """
     Constructs a dictionary from received items
 
@@ -32,7 +34,7 @@ def construct_dict(title=str(), issues=list()):
 
         issues - Jira issues that will populate the value
     """
-    dictionary = dict({title.lower(): list()})
+    dictionary: dict = dict({title.lower(): list()})
     for issue in issues:
         issue_assignee = (
             issue.fields.assignee.displayName if issue.fields.assignee else "Unassigned"
@@ -45,6 +47,7 @@ def construct_dict(title=str(), issues=list()):
                     "status": issue.fields.status.name,
                     "assignee": issue_assignee,
                     "reporter": issue.fields.reporter.displayName,
+                    # FIXME: look at this
                     "comments": issue.fields.comment.total,
                 }
             )
@@ -52,7 +55,7 @@ def construct_dict(title=str(), issues=list()):
     return dictionary
 
 
-def print_json(title=str(), issues=list()):
+def print_json(title: str, issues: List[Issue]) -> None:
     """
     Prints a JSON of issues
 
@@ -64,7 +67,7 @@ def print_json(title=str(), issues=list()):
     print(json.dumps(construct_dict(title, issues)))
 
 
-def print_yaml(title=str(), issues=list()):
+def print_yaml(title: str, issues: list) -> None:
     """
     Prints a YAML of issues
 
@@ -82,7 +85,7 @@ def print_yaml(title=str(), issues=list()):
     )
 
 
-def print_table(title=str(), issues=list()):
+def print_table(title: str, issues: List) -> None:
     """
     Prints a table of issues
 

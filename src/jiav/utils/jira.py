@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import jira.exceptions
-from jira import JIRA
+from jira import JIRA, Issue, JIRAError
 
 from jiav import exceptions, logger
+from typing import List, Union
 
 jiav_logger = logger.subscribe_to_logger()
 
@@ -23,7 +23,7 @@ class JiraConnection(object):
             cls._instance = super(JiraConnection, cls).__new__(cls)
         return cls._instance
 
-    def __init__(self, url=str(), username=str(), access_token=str()):
+    def __init__(self, url: str, username: str, access_token: str):
         """
         Attempts to authenticate with Jira API
 
@@ -36,7 +36,7 @@ class JiraConnection(object):
         if not hasattr(self, "jira"):
             try:
                 self.jira = JIRA(server=url)
-            except jira.exceptions.JIRAError as e:
+            except JIRAError as e:
                 if "JiraError HTTP 404 url" in str(e):
                     raise exceptions.NoJiraRestAPIEndpoint(self.jira, e.url) from None
                 else:
@@ -57,13 +57,13 @@ class JiraConnection(object):
             # Check if authentication was successful
             try:
                 self.jira.myself()
-            except jira.exceptions.JIRAError as e:
+            except JIRAError as e:
                 if "JiraError HTTP 401 url" in str(e):
                     raise exceptions.JiraAuthenticationFailed(url) from None
                 else:
                     raise exceptions.JiraUnhandledException()
 
-    def fetch_issues(self, issues=list(), jql=str()):
+    def fetch_issues(self, issues: List[str] = [], jql: str = "") -> List[Issue]:
         """
         Attempt to fetch issues from Jira
         Requires jira attribute to contain jira.JIRA
@@ -84,7 +84,7 @@ class JiraConnection(object):
                 try:
                     fetched_issue = self.jira.issue(issue)
                     fetched_issues.append(fetched_issue)
-                except jira.exceptions.JIRAError as e:
+                except JIRAError as e:
                     # Full text:
                     # You do not have the permission to see the specified issue
                     if "You do not have the permission to see " in e.text:
@@ -97,7 +97,7 @@ class JiraConnection(object):
         elif jql:
             try:
                 fetched_issues = self.jira.search_issues(jql)
-            except jira.exceptions.JIRAError as e:
+            except JIRAError as e:
                 if "Error in the JQL Query:" in e.text:
                     raise exceptions.JQLError(jql, e.text) from None
                 elif "for field" and "is invalid" in e.text:
@@ -110,7 +110,9 @@ class JiraConnection(object):
         jiav_logger.info(f"Discovered issues: {fetched_issues}")
         return fetched_issues
 
-    def check_if_status_is_valid(self, issue=None, desired_status=str()):
+    def check_if_status_is_valid(
+        self, issue: Issue, desired_status: str
+    ) -> Union[None, str]:
         """
         Checks if desired status is a valid status for this issue
 
@@ -122,14 +124,14 @@ class JiraConnection(object):
             transition_id - Workflow transition ID to use when updating
                             the status of the issue
         """
-        transition_id = None
+        transition_id: Union[None, str] = None
         issue_transitions = self.jira.transitions(issue)
         for status in issue_transitions:
             if desired_status == status["name"]:
                 transition_id = status["id"]
         return transition_id
 
-    def upload_attachment(self, issue=None, file_path=str()):
+    def upload_attachment(self, issue: Issue, file_path: str) -> None:
         """
         Uploads an attachment to issue
 
@@ -140,10 +142,10 @@ class JiraConnection(object):
         try:
             self.jira.add_attachment(issue=issue, attachment=file_path)
             jiav_logger.info(f"Uploaded attachment to issue {issue}")
-        except jira.exceptions.JIRAError:
+        except JIRAError:
             raise exceptions.JiraUnhandledException()
 
-    def update_issue_status(self, issue=JIRA.issue, transition_id=str()):
+    def update_issue_status(self, issue: Issue, transition_id: str) -> None:
         """
         Update issue status using transition ID discovered by
         jiav.utils.jira.JiraConnection.check_if_status_is_valid
@@ -157,10 +159,10 @@ class JiraConnection(object):
             self.jira.transition_issue(issue, transition=transition_id)
             issue.update()
             jiav_logger.info(f"Updated status for '{issue}'")
-        except jira.exceptions.JIRAError:
+        except JIRAError:
             raise exceptions.JiraUnhandledException()
 
-    def post_comment(self, issue=None, comment=str()):
+    def post_comment(self, issue: Issue, comment: str) -> None:
         """
         Posts a comment with the result of verification process
 
@@ -171,5 +173,5 @@ class JiraConnection(object):
         try:
             self.jira.add_comment(issue, comment)
             jiav_logger.info(f"Posted comment in '{issue}'")
-        except jira.exceptions.JIRAError:
+        except JIRAError:
             raise exceptions.JiraUnhandledException()

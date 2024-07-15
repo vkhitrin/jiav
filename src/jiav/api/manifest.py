@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from typing import Any, List, Union
+
 import jsonschema
 import jsonschema.exceptions
 import yaml
@@ -28,15 +30,15 @@ class Manifest(object):
         backend_steps      - Parsed backend steps to execute
     """
 
-    def __init__(self, manifest):
-        self.manifest = manifest
-        self.successful = True  # Will stay true unless failed
-        self.execution_output = None
-        self.verified_status = str()
-        self.verification_steps = list()
-        self.backend_steps = list()
+    def __init__(self, manifest: str) -> None:
+        self.manifest: str = manifest
+        self.successful: bool = True  # Will stay true unless failed
+        self.execution_output: str = ""
+        self.verified_status: str = ""
+        self.verification_steps: List[Any] = []
+        self.backend_steps: List[Any] = []
 
-    def backend_is_valid(self, backend=jiav.api.backends.BaseBackend()):
+    def backend_is_valid(self, backend: jiav.api.backends.BaseBackend) -> bool:
         """
         Validates requested backend
 
@@ -47,7 +49,7 @@ class Manifest(object):
         """
         return backend in jiav.constants.EXPOSED_BACKENDS
 
-    def validate_verification_step(self, step=dict({})):
+    def validate_verification_step(self, step: dict) -> bool:
         """
         Validates verification step
 
@@ -69,7 +71,7 @@ class Manifest(object):
         self.backend_steps.append(backend_instance)
         return True
 
-    def execute_manifest(self):
+    def execute_manifest(self) -> None:
         """
         Executes manifest
 
@@ -101,7 +103,7 @@ class Manifest(object):
             jiav_logger.error("Manifest has failed to execute")
 
 
-def validiate_text_contains_manifest(manifest=str()):
+def validiate_text_contains_manifest(manifest: str) -> dict:
     """
     Performs initial validation of text, checks if text is a valid
     manifest
@@ -128,7 +130,7 @@ def validiate_text_contains_manifest(manifest=str()):
     return manifest["jiav"]
 
 
-def validate_verifications_steps(manifest_obj=type(Manifest)):
+def validate_verifications_steps(manifest_obj: Manifest) -> None:
     """
     Validates verification_steps from jiav manifest
 
@@ -150,7 +152,7 @@ def validate_verifications_steps(manifest_obj=type(Manifest)):
         manifest_obj.validate_verification_step(step)
 
 
-def validate_manifest(text=type(str)):
+def validate_manifest(text: str) -> Union[Manifest, bool]:
     """
     Attempt to validate manifest from text
 
@@ -163,7 +165,9 @@ def validate_manifest(text=type(str)):
     # Attempt to validate initial manifest
     try:
         # If manifest is verified, create Manifest object
-        manifest = Manifest(validiate_text_contains_manifest(manifest=text))
+        manifest: Union[Manifest, bool] = Manifest(
+            validiate_text_contains_manifest(manifest=text)
+        )
         # Update manifest attributes based on validated manifest
         manifest.verified_status = manifest.manifest.get("verified_status")
         manifest.verification_steps = manifest.manifest.get("verification_steps")
@@ -173,10 +177,7 @@ def validate_manifest(text=type(str)):
         except exceptions.InvalidManifestException as e:
             jiav_logger.debug(e)
             manifest = False
-        except exceptions.InvalidBackend as e:
-            jiav_logger.debug(e)
-            manifest = False
-    except exceptions.InvalidYAMLException:
+    except exceptions.InvalidBackend as e:
+        jiav_logger.debug(e)
         manifest = False
-        jiav_logger.debug("No valid YAML was found in comment")
     return manifest

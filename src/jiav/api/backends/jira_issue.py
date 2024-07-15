@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
 from collections import namedtuple
+from typing import List, Union
+
+from jira import Issue
 
 from jiav import logger
 from jiav.api.backends import BaseBackend
@@ -25,30 +28,31 @@ class JiraIssueBackend(BaseBackend):
         step   - Backend excution instructions
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.name = "jira_issue"
         self.schema = schema
         self.step = MOCK_STEP
         super().__init__(self.name, self.schema, self.step)
 
     # Overrdie method of BaseBackend
-    def execute_backend(self):
+    def execute_backend(self) -> None:
         """
         Execute backend
 
         Returns a namedtuple describing the jiav manifest execution
         """
         # Parse required arugments
-        issue = self.step["issue"]
-        issue_status = self.step["status"]
+        issue: Union[Issue, str] = self.step["issue"]
+        issue_status: str = self.step["status"]
         # Create a namedtuple to hold the execution result output and errors
         result = namedtuple("result", ["successful", "output", "errors"])
-        output = list()
-        errors = list()
-        successful = False
+        output: List = []
+        errors: List = []
+        successful: bool = False
         # Reusing the original JiraConnection object since the class is a singleton
-        jira_connection = JiraConnection()
-        remote_issue, remote_issue_status = None, None
+        jira_connection: JiraConnection = JiraConnection()
+        remote_issue: Union[Issue, None] = None
+        remote_issue_status: str = ""
         jiav_logger.debug(f"Issue: {issue}")
         jiav_logger.debug(f"Status: {issue_status}")
         try:
@@ -75,6 +79,6 @@ class JiraIssueBackend(BaseBackend):
                     f"Jira issue '{issue}' is in the desired status '{issue_status}'"
                 )
         except Exception as e:
-            jiav_logger.error(e.text)  # pyright: ignore # pylint: disable=E1101
-            errors.append(e.text)  # pyright: ignore # pylint: disable=E1101
+            jiav_logger.error(e.text)  # type: ignore # pyright: ignore # pylint: disable=E1101
+            errors.append(e.text)  # type: ignore # pyright: ignore # pylint: disable=E1101
         self.result = result(successful, output, errors)

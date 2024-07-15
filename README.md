@@ -143,7 +143,7 @@ jiav —debug validate-manifest —from-file=/path/to/file
 To install in development mode, use `poetry`:
 
 ```bash
-poetry install --with=main,dev
+poetry install --with=main,dev,types
 ```
 
 If proposing new pull requests, please ensure that new/existing tests are passing:

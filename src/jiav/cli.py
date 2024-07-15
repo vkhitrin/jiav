@@ -2,10 +2,16 @@
 
 import argparse
 import sys
+from argparse import Namespace
+from logging import Logger
+from typing import Any, List, Tuple, Union
+
+from jira import Issue
 
 import jiav.constants
 from jiav import logger, summary, verification
 from jiav.api import manifest
+from jiav.api.manifest import Manifest
 from jiav.utils.jira import JiraConnection
 
 
@@ -13,12 +19,12 @@ from jiav.utils.jira import JiraConnection
 #                 subcommands, but right now this is one less dependency
 #                 to manage
 class JiavCLI(object):
-    def __init__(self):
-        self.debug = False
-        self.parser = type(argparse.ArgumentParser)
-        self.arguments = list()
+    def __init__(self) -> None:
+        self.debug: bool = False
+        self.parser: argparse.ArgumentParser
+        self.arguments: List[Any]
 
-    def parse(self, in_args):
+    def parse(self, in_args: List[Any]) -> None:
         """
         Parse arugmunets passed from command line
 
@@ -56,7 +62,9 @@ Available commands
             choices=["verify", "list-backends", "validate-manifest"],
         )
         # Exclude the first argument which is the program
-        args = self.parser.parse_known_args(self.arguments[1:])
+        args: Tuple[Namespace, List[str]] = self.parser.parse_known_args(
+            self.arguments[1:]
+        )
         self.debug = args[0].debug
         self.arguments.remove(args[0].command)
         if "-" in args[0].command:
@@ -70,7 +78,7 @@ Available commands
         # Use dispatch pattern to invoke method with same name
         getattr(self, args[0].command)()
 
-    def verify(self):
+    def verify(self) -> None:
         self.parser.usage = """jiav [-v | --version] [-d | --debug] verify [<args>]
 
 Global flags
@@ -118,10 +126,10 @@ Optional arguments
         arg_group.add_argument("-q", "--query", type=str)
         args = self.parser.parse_args(sys.argv[1:])
         # Init logger
-        jiav_logger = logger.configure_logger(args.debug)
+        jiav_logger: Logger = logger.configure_logger(args.debug)
         # Init variables
-        issues = list()
-        verifeid_issues = list()
+        issues: List[Issue] = []
+        verifeid_issues: List[Issue] = []
         # If user requested to upload attachment, warn them
         if args.upload_attachment_unsafe:
             jiav_logger.warn(
@@ -131,8 +139,9 @@ Optional arguments
         # If user requested to include public comments, warn them
         if args.allow_public_comments:
             jiav_logger.warn("Will include public comments in search")
+        # FIXME: Fix this
         # Try to authenticate with Jira
-        jira_connection = JiraConnection(
+        jira_connection: JiraConnection = JiraConnection(
             url=args.jira,
             username=args.username,
             access_token=args.access_token,
@@ -150,7 +159,7 @@ Optional arguments
         # Print summary
         summary.prepare_summary(issues=verifeid_issues, format=args.format)
 
-    def list_backends(self):
+    def list_backends(self) -> None:
         """
         List installed backends
         """
@@ -165,7 +174,7 @@ List backends located in 'jiav/backends' directory
         self.parser.parse_args(self.arguments[1:])
         print(jiav.constants.EXPOSED_BACKENDS)
 
-    def validate_manifest(self):
+    def validate_manifest(self) -> None:
         """
         Validate manifest
         """
@@ -178,7 +187,8 @@ Global flags
 Mandatory arguments
     -f --from-file    path to local file containing manifest
 """  # noqa
-        verification, content = None, None
+        verification: Union[Manifest, bool] = False
+        content: str = ""
         self.parser.add_argument(
             "-f", "--from-file", type=argparse.FileType("r"), required=True
         )
@@ -195,7 +205,7 @@ Mandatory arguments
             sys.exit(1)
 
 
-def main():
+def main() -> None:
     cli_client = JiavCLI()
     cli_client.parse(sys.argv)
 

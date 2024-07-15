@@ -2,11 +2,12 @@
 
 import tempfile
 from datetime import datetime
+from typing import IO, Any, List
 
 from iteration_utilities import deepflatten  # pyright: reportGeneralTypeIssues=false
 
 
-def get_current_timestamp():
+def get_current_timestamp() -> str:
     """
     Get current timestamp
 
@@ -18,7 +19,7 @@ def get_current_timestamp():
     return current_timestamp
 
 
-def write_content_to_tempfile(content):
+def write_content_to_tempfile(content: List[Any]) -> IO:
     """
     Write content to temporary file
 
