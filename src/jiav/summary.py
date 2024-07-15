@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 
 import json
+from typing import Any, Dict, List
 
 import yaml
-from prettytable import SINGLE_BORDER, PrettyTable
+from jira import Issue
+from rich import box, print_json
+from rich.console import Console
+from rich.table import Table
 
 
-def prepare_summary(issues=list(), format="table"):
+def prepare_summary(issues: List[Issue] = [], format: str = "table") -> None:
     """
     Prepares a summary or verified issues
 
@@ -16,14 +20,14 @@ def prepare_summary(issues=list(), format="table"):
         format - Output format
     """
     if format == "json":
-        print_json("verified_issues", issues)
+        format_json("verified_issues", issues)
     elif format == "yaml":
-        print_yaml("verified_issues", issues)
+        format_yaml("verified_issues", issues)
     else:
-        print_table("Verified Issues", issues)
+        format_table("Verified Issues", issues)
 
 
-def construct_dict(title=str(), issues=list()):
+def construct_dict(title: str, issues: List[Issue]) -> Dict[Any, Any]:
     """
     Constructs a dictionary from received items
 
@@ -32,7 +36,7 @@ def construct_dict(title=str(), issues=list()):
 
         issues - Jira issues that will populate the value
     """
-    dictionary = dict({title.lower(): list()})
+    dictionary: dict = dict({title.lower(): list()})
     for issue in issues:
         issue_assignee = (
             issue.fields.assignee.displayName if issue.fields.assignee else "Unassigned"
@@ -45,14 +49,14 @@ def construct_dict(title=str(), issues=list()):
                     "status": issue.fields.status.name,
                     "assignee": issue_assignee,
                     "reporter": issue.fields.reporter.displayName,
-                    "comments": issue.fields.comment.total,
+                    "comments": issue.fields.comment.total,  # type: ignore
                 }
             )
         )
     return dictionary
 
 
-def print_json(title=str(), issues=list()):
+def format_json(title: str, issues: List[Issue]) -> None:
     """
     Prints a JSON of issues
 
@@ -61,10 +65,11 @@ def print_json(title=str(), issues=list()):
 
         issues - List of issues
     """
-    print(json.dumps(construct_dict(title, issues)))
+    j = json.dumps(construct_dict(title, issues))
+    print_json(json=j)
 
 
-def print_yaml(title=str(), issues=list()):
+def format_yaml(title: str, issues: list) -> None:
     """
     Prints a YAML of issues
 
@@ -82,7 +87,7 @@ def print_yaml(title=str(), issues=list()):
     )
 
 
-def print_table(title=str(), issues=list()):
+def format_table(title: str, issues: List[Issue]) -> None:
     """
     Prints a table of issues
 
@@ -91,8 +96,7 @@ def print_table(title=str(), issues=list()):
 
         issues - List of issues
     """
-    table = PrettyTable()
-    table.field_names = [
+    table_columns: List[str] = [
         "Issue",
         "Summary",
         "Status",
@@ -100,20 +104,17 @@ def print_table(title=str(), issues=list()):
         "Reporter",
         "Comments",
     ]
+    table = Table(title=title, box=box.SIMPLE_HEAD, *table_columns)
     for issue in issues:
         issue_assignee = (
             issue.fields.assignee.displayName if issue.fields.assignee else "Unassigned"
         )
         table.add_row(
-            [
-                issue,
-                issue.fields.summary,
-                issue.fields.status,
-                (f"{issue_assignee} "),
-                (f"{issue.fields.reporter.displayName} "),
-                issue.fields.comment.total,
-            ]
+            str(issue),
+            issue.fields.summary,
+            str(issue.fields.status),
+            (f"{issue_assignee} "),
+            (f"{issue.fields.reporter.displayName} "),
+            str(issue.fields.comment.total),  # type: ignore
         )
-    table.set_style(SINGLE_BORDER)
-    table.title = title
-    print(table)
+    Console().print(table)

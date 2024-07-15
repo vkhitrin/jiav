@@ -2,13 +2,17 @@
 
 import os
 import re
-from collections import namedtuple
 
 from jiav import logger
-from jiav.api.backends import BaseBackend
-from jiav.api.schemas.regexinfile import schema
+from jiav.backend import BaseBackend, Result
 
 MOCK_STEP = {"path": "/path/to/file", "regex": r"^.*$"}
+SCHEMA = {
+    "type": "object",
+    "required": ["path", "regex"],
+    "properties": {"path": {"type": "string"}, "regex": {"type": "string"}},
+    "additionalProperties": False,
+}
 
 # Subscribe to logger
 jiav_logger = logger.subscribe_to_logger()
@@ -27,14 +31,14 @@ class RegexInFileBackend(BaseBackend):
         step   - Backend excution instructions
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.name = "regexinfile"
-        self.schema = schema
+        self.schema = SCHEMA
         self.step = MOCK_STEP
-        super().__init__(self.name, self.schema, self.step)
+        super().__init__(name=self.name, schema=self.schema, step=self.step)
 
     # Override method of BaseBackend
-    def execute_backend(self):
+    def execute_backend(self) -> None:
         """
         Execute backend
 
@@ -43,8 +47,6 @@ class RegexInFileBackend(BaseBackend):
         # Parse required arugments
         file = self.step["path"]
         regex = self.step["regex"]
-        # Create a namedtuple to hold the execution result output and errors
-        result = namedtuple("result", ["successful", "output", "errors"])
         output = list()
         errors = list()
         successful = False
@@ -56,12 +58,16 @@ class RegexInFileBackend(BaseBackend):
                 with open(file) as f:
                     file_content = f.read()
                     if not compiled_regex.search(file_content):
-                        errors.append(f"Regex {regex} is not present in file {file}")
-                        jiav_logger.error("Regex was not located in file")
+                        errors.append(
+                            f"Regex '{regex}' is not present in file '{file}'"
+                        )
+                        jiav_logger.error(
+                            f"Regex '{regex}' is not present in file '{file}'"
+                        )
                     else:
                         successful = True
-                        output.append(f"Regex '{regex}' found in {file}")
-                        jiav_logger.debug("Regex was located in file")
+                        output.append(f"Regex '{regex}' found in '{file}'")
+                        jiav_logger.debug(f"Regex '{regex}' found in '{file}'")
             except Exception as e:
                 errors.append(f"OS exception: {str(e)}")
-        self.result = result(successful, output, errors)
+        self.result = Result(successful, output, errors)

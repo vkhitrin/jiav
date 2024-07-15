@@ -2,212 +2,139 @@
  User Guide
 ############
 
-******
- Jira
-******
+.. note::
 
-To use ``jiav``, a user must have generated a Jira `personal access
-token
-<https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html>`_
-when using a self-hosted instance or an `API token
-<https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/>`_
-when using a Jira cloud instance.
+   |  Please read the :ref:`overview` section before reading this user
+      guide.
+   |  It contains important information regarding inteactions with Jira.
 
-Every Jira instance is unique and may contain various attributes, the
-user must be familiar with their Jira instance.
+After following the :ref:`installation guide` instructions, you can use
+the ``jiav`` command.
 
-All communication with Jira is through the `jira
-<https://pypi.org/project/jira/>`_ python module.
+***************
+ General Usage
+***************
 
-*****
- CLI
-*****
+To view the help message, run the following command (applicable for
+subcommands as well):
 
-After following the :ref:`installing:Installation Guide`, the ``jiav``
-command will be available.
+.. code:: bash
 
-There are several sub-commands available.
+   jiav --help
 
-Global Flags
-============
-
--v, --version
--------------
-
-**Required**: False
-
-**Description**: Prints version
-
-**Example**:
+To view the tools version and installed backends, run the following
+command:
 
 .. code:: bash
 
    jiav --version
 
--d, --debug
------------
+*************
+ Subcommands
+*************
 
-**Required**: False
+``validate-manifest``
+=====================
 
-**Description**: Will display additional debug verbosely
+Validate manifest locally.
 
-**Example**:
+.. list-table::
+   :widths: 25 25 50
+   :header-rows: 1
 
-.. code:: bash
+   -  -  Options
+      -  Environment Variable
+      -  Help
 
-   jiav --debug
+   -  -  ``-f``, ``--from-file``
+      -  ``JIAV_VALIDATE_MANIFEST_FROM_FILE``
+      -  Path to local file to validate. **[required]**
 
-Verify
-======
+   -  -  ``--help``
+      -
+      -  Show this message and exit.
 
-Verifies Jira issues.
-
--f, --format
-------------
-
-**Required**: False
-
-**Description**: Output format
-
-**Example**:
-
-.. code:: bash
-
-   jiav verify --format json
-
--u, --username
---------------
-
-**Required**: False
-
-**Description**: Username to authenticate with for Jira Cloud instance
-
-**Example**:
+Examlpe:
 
 .. code:: bash
 
-   jiav verify --username test@example.com
+   jiav validate-manifest --from-file /path/to/manifest.yaml
 
--a, --access-token
-------------------
+``verify``
+==========
 
-**Required**: True
+Verifies issues in Jira.
 
-**Description**: Token (API token for Jira Cloud or Personal Access
-Token for self-hosted Jira)
+.. list-table::
+   :widths: 25 25 50
+   :header-rows: 1
 
-**Example**:
+   -  -  Options
+      -  Environment Variable
+      -  Help
 
-.. code:: bash
+   -  -  ``-j``, ``--jira``
+      -  ``JIAV_VERIFY_JIRA``
+      -  Jira URL. **[required]**
 
-   jiav verify --access-token QRaG8wgBkSGRBJfx5MKNvKMoVpxao2MUxI68MqLo
+   -  -  ``-a``, ``--access-token``
+      -  ``JIAV_VERIFY_ACCESS_TOKEN``
+      -  Personal Access Token (PAT) for self-hosted instances or an API
+         token for cloud instances. **[required]**
 
--j, --jira
-----------
+   -  -  ``-u``, ``--username``
+      -  ``JIAV_VERIFY_USERANME``
+      -  Cloud Jira username NOTE: Not required for self-hosted
+         instances.
 
-**Required**: True
+   -  -  ``-i``, ``--issue``
+      -  ``JIAV_VERIFY_ISSUE``
+      -  Issue to verify. NOTE: This argument is mutually exclusive with
+         arguments: [query].
 
-**Description**: URL of a Jira instance to authenticate with
+   -  -  ``-q``, ``--query``
+      -  ``JIAV_VERIFY_QUERY``
+      -  JQL query. NOTE: This argument is mutually exclusive with
+         arguments: [issue].
 
-**Example**:
+   -  -  ``--upload-attachment-unsafe``
 
-.. code:: bash
+      -  ``JIAV_VERIFY_UPLOAD_ATTACHMENT_UNSAFE``
 
-   jiav verify --jira http://localhost
+      -  Uploads attachment of execution, this is not safe since all
+         users who can access the ticket will be able to view it; refer
+         to https://jira.atlassian.com/browse/JRASERVER-3893
 
--i, --issue
------------
+   -  -  ``--allow-public-comments``
 
-**Required**: True, mutually exclusive with ``--query``
+      -  ``JIAV_VERIFY_ALLOW_PUBLIC_COMMENTS``
 
-**Description**: Jira issue, multiple arguments can be provided
+      -  Allows to read manifest from non-private comments; this is
+         potentially dangerous since unexpected users will be able to
+         provide a manifest.
 
-**Example**:
+   -  -  ``--no-comment-on-failure``
+      -  ``JIAV_VERIFY_NO_COMENT_ON_FAILURE``
+      -  Do not post a comment on failed manifest execution.
 
-.. code:: bash
+   -  -  ``--dry-run``
+      -  ``JIAV_VERIFY_DRY_RUN``
+      -  Execute manifest without updating issues.
 
-   jiav verify --issue KEY-1 --issue KEY-2
+   -  -  ``--debug``
+      -  ``JIAV_VERIFY_DEBUG``
+      -  Enable debug logging.
 
--q, --query
------------
+   -  -  ``--format``
+      -  ``JIAV_VERIFY_FORMAT``
+      -  Output format. (table|json|yaml)
 
-**Required**: True, mutually exclusive with ``--issue``
+   -  -  ``--help``
+      -
+      -  Show this message and exit.
 
-**Description**: `JQL
-<https://support.atlassian.com/jira-service-management-cloud/docs/use-advanced-search-with-jira-query-language-jql/>`_
-query
-
-**Example**:
-
-.. code:: bash
-
-   jiav verify --query 'issue="KEY-1"'
-
---allow-public-comments
------------------------
-
-**Required**: False
-
-**Description**: Allow reading from public comments, **NOT SAFE**.
-
-**Example**:
-
-.. code:: bash
-
-   jiav verify --allow-public-comments
-
---upload-attachment-unsafe
---------------------------
-
-**Required**: False
-
-**Description**: Uploads execution output, **NOT SAFE**, refer to
-`JRASERVER-3893 <https://jira.atlassian.com/browse/JRASERVER-3893>`_
-
-**Example**:
+Examlpe:
 
 .. code:: bash
 
-   jiav verify --allow-public-comments
-
---dry-run
----------
-
-**Required**: False
-
-**Description**: Run as dry run (practice run), will not update issues
-
-**Example**:
-
-.. code:: bash
-
-   jiav verify --dry-run
-
-List backends
-=============
-
-List supported backends
-
-**Example**:
-
-.. code:: bash
-
-   jiav list-backends
-
-Validate manifest
-=================
-
-Validates manifest
-
---from-file
------------
-
-**Required**: True
-
-**Description**: Validates manifest from file
-
-**Example**:
-
-.. code:: bash
-
-   jiav --debug validate-manifest --from-file='/path/to/file'
+   jiav verify --jira "http://example.com/jira" -a "<ACCESS_TOKEN>" -i 'EXAMPLE-1' --allow-public-comments --upload-attachment-unsafe

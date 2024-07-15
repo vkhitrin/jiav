@@ -1,3 +1,5 @@
-sphinx>=1.5.1
+sphinx
 sphinx-autobuild
-Pygments>=2.2.0
+Pygments
+sphinxcontrib-video
+sphinxcontrib-mermaid

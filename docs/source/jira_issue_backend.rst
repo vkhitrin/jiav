@@ -1,42 +1,32 @@
-####################
- jira_issue Backend
-####################
+##################
+jira_issue Backend
+##################
 
-**********
- Overview
-**********
+Look for a Jira issue status.
 
-``jiav`` can lookup a Jira issue's status to verify issues.
+**Attributes**
 
-*********
- Example
-*********
+.. list-table::
+   :widths: 10 90
+   :header-rows: 1
 
-Basic scenario
-==============
+   -  -  Property
+      -  Descrption
+   -  -  issue
+      -  Jira issue key. **[required]**
+   -  -  regex
+      -  Jira issue status. **[required]**
+
+**Examples**
 
 Verify issue if ``TEST-1`` issue is ``Done``.
 
-   .. code:: yaml
+.. code:: yaml
 
-      jiav:
-        verification_status: "Done"
-        verification_steps:
-          - name: Check Jira Issue
-            backend: jira_issue
-            issue: "TEST-1"
-            status: "Done"
-
-Attributes
-==========
-
-issue
------
-
-Jira issue ``key``.
-
-status
-------
-
-Jira issues's status. If this status is met, the invoking issue will be
-verified.
+   jiav:
+     verification_status: "Done"
+     verification_steps:
+       - name: Check Jira Issue
+         backend: jira_issue
+         issue: "TEST-1"
+         status: "Done"

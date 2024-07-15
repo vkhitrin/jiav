@@ -1,10 +1,6 @@
-###################
- Design Philosophy
-###################
-
-**********
- Overview
-**********
+#################
+Design Philosophy
+#################
 
 The goal of this project is to implement an 'auto verification'
 workflow, which aims to be generic.
@@ -12,17 +8,21 @@ workflow, which aims to be generic.
 'auto verification' is a procedure where an automated workflow will
 fetch and verify issues seamlessly.
 
-****************************
- Auto Verification Workflow
-****************************
+Auto Verification Workflow
+==========================
 
-.. image:: _static/Flow.jpeg
+.. mermaid::
 
-***********
- jiav flow
-***********
+    sequenceDiagram
+        User->>+Jira: Post Manifest
+        User->>+jiav: Invoke
+        jiav->>+Jira: Authenticate
+        jiav->>+Jira: Look For Valid Manifests
+        Jira->>+jiav: Return Valid Manifests
+        jiav->>+jiav: Execute Manifests
+        jiav->>+Jira: Update Issue
 
--  Access the Jira instance using a personal access key.
+-  Access the Jira instance (using PAT or API token).
 -  Recurse over Jira issues (provided by JQL or manually).
 -  In each issue, recurse the comments from latest to oldest.
 -  Check for a valid ``jiav`` manifest (only in private comments by
@@ -31,7 +31,7 @@ fetch and verify issues seamlessly.
 -  If the execution is successful, verify the issue.
 
 Step 1 - Jira Issues Of Interest (“The what”)
-=============================================
+---------------------------------------------
 
 Issues are marked as 'Issues Of Interest' by the user.
 
@@ -52,7 +52,7 @@ Having a user-defined input is beneficial due to the following:
    without enforcing hard-coded scenarios.
 
 Step 2 - Auto Verification Issues Of Interest (“The why”)
-=========================================================
+---------------------------------------------------------
 
 **Inspired by Continuous Integration(CI)**.
 
@@ -68,7 +68,7 @@ automation to check and validate issues with minimal manual interaction
 for each release.
 
 Step 3 - Auto Verification Procedure (“The how”)
-================================================
+------------------------------------------------
 
 Based on a user-defined logic, procedures will be executed and will be
 handled accordingly.

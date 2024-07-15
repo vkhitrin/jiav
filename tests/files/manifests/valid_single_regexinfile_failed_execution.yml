@@ -4,5 +4,5 @@ jiav:
   verification_steps:
     - name: Check for line
       backend: regexinfile
-      path: tests/files/manifests/valid_single_regexinfile.yml
+      path: non_existing_file
       regex: jiav

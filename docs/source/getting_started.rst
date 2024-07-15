@@ -1,6 +1,6 @@
-########################
- Demo - Try It Yourself
-########################
+#################
+ Getting Started
+#################
 
 If you do not have access to a Jira instance or you wish to attempt this
 tool in an isolated environment, this guide will help you get started
@@ -16,7 +16,7 @@ compatible container engine like `podman <https://podman.io>`_):
    bootstrapping.
 
    It might take a few minutes until the Jira will be available on
-   http://<HOST_OR_LOCALHOST>:2990/jira
+   ``http://<HOST>:2990/jira``
 
 #. Start the container:
 
@@ -35,10 +35,10 @@ compatible container engine like `podman <https://podman.io>`_):
    a project.
 
 #. `Create a Jira issue
-   <https://support.atlassian.com/jira-service-management-cloud/docs/create-issues-and-sub-tasks/#Createanissueandasubtask-Createanissue>`_
-   and assign the issue to an ``admin`` user.
+   <https://support.atlassian.com/jira-service-management-cloud/docs/create-issues-and-sub-tasks/#Createanissueandasubtask-Createanissue>`_.
 
-#. Generate a personal access token.
+#. `Generate a personal access token
+   <https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html>`_.
 
 #. Post a ``jiav`` comment.
 

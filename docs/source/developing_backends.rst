@@ -2,66 +2,107 @@
  Developing Backends
 #####################
 
-.. note::
-
-   Backend implementation might be changed/enhanced in the future.
-
 Due to the unlimited amount of possible use cases and implementations
 available, we want to expose the ability for developers to create custom
-:ref:`backends:jiav Backends`.
+:ref:`backends`.
+
+********************
+ What Is A Backend?
+********************
+
+A backend is a Python package that declares an `entry_point
+<https://packaging.python.org/en/latest/specifications/entry-points/>`_.
+in the ``jiav.backend`` group.
+
+That entry point should reference a subclass of the
+``jiav.backend.BaseBackend`` abstract base class. This allows Harlequin
+to discover installed adapters and instantiate a selected backend at
+run-time.
 
 ****************
  Implementation
 ****************
 
-Currently, all allowed backends must reside in a static directory
-``jiav/api/backends/``.
+All backends are epxected to share the custom ``jiav.backend.Result``
+interface, populate it and return it at the end:
 
-Each backend should inherit from ``BaseBackend`` object under the path
-``jiav/api/backends/__init__.py``.
+.. list-table::
+   :widths: 25 25 50
+   :header-rows: 1
 
-There are several methods that are inherited from ``BaseBackend``, some
-of them will be overridden when developing a custom backend.
+   -  -  Attribute
+      -  Type
+      -  Descrption
 
-All backends should accept various attributes that are validated by a
-`JSON schema <https://json-schema.org/>`_. Schemas are stored under the
-``jiav/api/schemas/`` directory.
+   -  -  successful
+      -  boolean
+      -  Represents if the backend executed successfully.
+
+   -  -  errors
+      -  List[str]
+      -  List of strings containing errors.
+
+   -  -  output
+      -  List[str]
+      -  List of strings containing output.
+
+All baceknds inherit from ``BaseBackend`` and must implement the
+following methods:
+
+-  ``validate_schema`` - validate a schema using `jsonschema
+   <https://json-schema.org>`_.
+-  ``execute_backend`` - Executes the backend, return a ``Result``.
+
+All backends are expected to subscribe to the global logger
+``jiav.logger`` to log information.
 
 *****************************************
  Developing A Custom ``example`` Backend
 *****************************************
 
-In this section, we will create an ``example`` backend that executes
-basic shell commands.
+.. note::
 
-#. Create a python file containing our code,
-   ``jiav/api/backends/example.py``.
+   Based on a backend `template
+   <https://github.com/vkhitrin/jiav-backend-template>`_.
 
-#. Import all of the required and recommended ``jiav`` dependencies:
+In this section, we will create an ``example`` backend that checks if an
+environment variable is set.
+
+#. Your adapter must register an entry point in the ``jiav.backend``
+   group, using the packaging software you use to build your project.
+   With Poetry, you can define the entry point in your
+   ``pyproject.toml`` file:
+
+   .. code::
+
+      [tool.poetry.plugins."jiav.backend"]
+      example = "jiav_example.ExampleBackend"
+
+#. Ensure that your class is discovarable in the `jiav_example`
+   namespace, populate ``src/jiav_example/__init__.py``:
 
    .. code:: python
 
-      # Import BaseBackend
-      from jiav.api.backends import BaseBackend
+      from jiav_example.backend import ExampleBackend
 
-      # Import JSON schema to be used in validation
-      from jiav.api.schemas.example import schema
+      __all__ = ["ExampleBackend"]
 
-      # Import global jiav logger
+#. Create a ``src/jiav_example/backend.py`` and import all dependencies
+
+   .. code:: python
+
+      import os
+      # Global logger
       from jiav import logger
+      # Required interafces
+      from jiav.backend import BaseBackend, Result
+      # Type enforcement
+      from typing import List
 
-      # Import namedtuple
-      from collections import namedtuple
-
-      # Import subprocess
-      import subprocess
-
-   The backend should also subscribe to the global logger to allow debug
-   info:
+#. Subscribe to the global logger:
 
    .. code:: python
 
-      # Subsribe to global logger
       jiav_logger = logger.subscribe_to_logger()
 
 #. In the current implementation of backends, we need to create a mock
@@ -71,98 +112,95 @@ basic shell commands.
    .. code:: python
 
       # Mock step that will be used when initializing an initial object
-      MOCK_STEP = {"cmd": "true", "rc": 0}
+      MOCK_STEP = {"example": "example"}
 
-#. Create our backend object:
+#. define the schema that will be used to validate the step supplied by
+   the user:
 
    .. code:: python
 
-      # Our backend object
+      SCHEMA = {
+          "type": "object",
+          "required": ["example"],
+          "properties": {"example": {"type": "string"}},
+          "additionalProperties": False,
+      }
+
+#. Create an initial ``ExampleBackend`` interface which inherits from
+   ``BaseBackend``:
+
+   .. code:: python
+
       class ExampleBackend(BaseBackend):
-          def __init__(self):
-              # Name of the backend will be added to the list of exposed backends
-               self.name = 'example'
-              # JSON schema to validate backend
-              self.schema = schema
-              # Verification step supplied by the user
-          self.step = MOCK_STEP
-              # When not parsed yet, will use MOCK_STEP
-              self.step = MOCK_STEP
-              super().__init__(self.name,
-                               self.schema,
-                               self.step)
+          """
+          ExampleBackend object
 
-   We override the ``execute_backend`` method with our backend's logic.
+          An example backend for jiav
 
-#. jiav requires the backend to return a ``namedtuple`` with the
-   following keys:
+          Attributes:
+              name   - Backend name
+              schema - json_schema to be used to verify that the supplied step is
+                       valid according to the backends's requirements
+              step   - Backend excution instructions
+          """
 
-   -  ``successful`` - Boolean that represents if the backend executed
-      successfully.
-   -  ``output`` - String/List containing execution output.
-   -  ``errors`` - String/List containing errors.
+          MOCK_STEP = {"example": "example"}
+          SCHEMA = {
+              "type": "object",
+              "required": ["example"],
+              "properties": {"example": {"type": "string"}},
+              "additionalProperties": False,
+          }
+
+          def __init__(self) -> None:
+              self.name = "example"
+              self.schema = self.SCHEMA
+              self.step = self.MOCK_STEP
+              super().__init__(name=self.name, schema=self.schema, step=self.step)
+
+#. Implement `execute_backend` method that will execute the backend and
+   return a ``Result``:
 
    .. code:: python
 
       # Overrdie method of BaseBackend
-      def execute_backend(self):
-          # Parse required arguments
-          cmd = self.step["cmd"]
-          rc = self.step["rc"]
-          # Execute command
-          shell_run = Popen(
-              cmd,
-              stdout=subprocess.PIPE,
-              stderr=subprocess.PIPE,
-              shell=True,
-              universal_newlines=True,
-          )
-          output, errors = shell_run.communicate()
-          s_rc = shell_run.returncode
-          # If executed return code equals desired return code
-          jiav_logger.debug("CMD: {}".format(cmd))
-          jiav_logger.debug("OUTPUT: {}".format(output).rstrip())
-          jiav_logger.debug("Return code: {}".format(s_rc))
-          if rc == s_rc:
+      def execute_backend(self) -> None:
+          """
+          Execute backend
+
+          Returns a namedtuple describing the jiav manifest execution
+          """
+          # Parse required arugments
+          example: str = self.step["example"]
+          output: List = []
+          errors: List = []
+          successful: bool = False
+          jiav_logger.debug(f"Example: {example}")
+          try:
+              os.environ["JIAV_EXAMPLE"] = example
               successful = True
               jiav_logger.debug(
-                  "Command executed successfully with the " "expected return code"
+                  f"Environment variable 'JIAV_EXAMPLE' was set to '{example}'"
               )
-          else:
-              successful = False
-              jiav_logger.error("Command failed to execute with the " "expected return code")
-              jiav_logger.error("Expected return code: {}".format(rc))
-              if errors:
-                  jiav_logger.error("Error: {}".format(errors))
-          # create a namedtuple to hold
-          # Create a namedtuple to hold the execution result output and errors
-          result = namedtuple("result", ["successful", "output", "errors"])
-          self.result = result(successful, output, errors)
+              output.append(f"Environment variable 'JIAV_EXAMPLE' was set to '{example}'")
+          except Exception as e:
+              jiav_logger.error(e.text)
+              errors.append(e.text)
+          self.result = Result(successful, output, errors)
 
-   **View full** :download:`jiav/api/backends/example_backend.py
-   <_static/example_backend.py>`.
-
-#. We will also create a schema file that will validate the backend
-   attributes supplied by the user, ``jiav/api/schema/example.py``.
-
-   .. code:: python
-
-      schema = {
-          "type": "object",
-          "required": ["cmd", "rc"],
-          "properties": {"cmd": {"type": "string"}, "rc": {"type": "integer"}},
-          "additionalProperties": False,
-      }
-
-   **View full** :download:`jiav/api/backends/example_schema.py
-   <_static/example_schema.py>`.
-
-#. Verify ``example`` backend is registered in ``jiav``:
+#. Install the package and verify ``example`` backend is registered in
+   ``jiav``:
 
    .. code:: bash
 
-      jiav list-backends
-      {'example': <class 'jiav.api.backends.example.ExampleBackend'>
+      jiav --version
+      jiav, version 0.3.0
+
+      Installed Backends:
+        - example, version {'version': '0.1.0', 'class': 'jiav_example.ExampleBackend'}
+        - jira_issue, version {'version': '0.3.0', 'class': 'jiav_jira_issue.JiraIssueBackend'}
+        - lineinfile, version {'version': '0.3.0', 'class': 'jiav_lineinfile.LineInFileBackend'}
+        - regexinfile, version {'version': '0.3.0', 'class': 'jiav_regexinfile.RegexInFileBackend'}
 
 #. Create a test manifest ``/tmp/example_manifest.yaml``, and verify
    that it is valid
@@ -173,14 +211,9 @@ basic shell commands.
       jiav:
         verified_status: "Done"
         verification_steps:
-          - name: test backend
+          - name: "Example"
             backend: example
-            cmd:
-              - echo
-              - test
-            rc: 0
+            example: "example"
       EOF
+      export JIAV_MANIFEST="/tmp/example_manifest.yaml"
       jiav validate-manifest --from-file="/tmp/example_manifest.yaml"
-
-   **View full** :download:`jiav/api/backends/example_manifest.yaml
-   <_static/example_manifest.yaml>`.

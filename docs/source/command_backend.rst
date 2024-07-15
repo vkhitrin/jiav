@@ -1,10 +1,6 @@
 #################
- Command Backend
+ command Backend
 #################
-
-**********
- Overview
-**********
 
 .. note::
 
@@ -17,53 +13,47 @@
       code.
    |  **Use it at your own risk**.
 
-``jiav`` can execute commands to verify issues.
+Execute shell commands.
 
-*********
- Example
-*********
+**Attributes**
 
-Basic scenario
-==============
+.. list-table::
+   :widths: 10 90
+   :header-rows: 1
 
-Execute a single command and expect a return code equal to 0:
+   -  -  Property
+      -  Descrption
+   -  -  cmd
+      -  Shell command to execute. **[required]**
+   -  -  rc
+      -  Expected return code. **[required]**
 
-   .. code:: yaml
+**Examples**
 
-      jiav:
-        verification_status: "Done"
-        verification_steps:
-          - name: Check the existence of a command
-            backend: shell
-            cmd:
-              - which
-              - openstack
-            rc: 0
+Execute a single command and expect a return code equal to ``0``:
 
-Negative Testing Scenario
-=========================
+.. code:: yaml
 
-Execute a command and expect to fail with a return code of 1:
+   jiav:
+     verification_status: "Done"
+     verification_steps:
+       - name: Check the existence of a command
+         backend: shell
+         cmd:
+           - which
+           - ls
+         rc: 0
 
-   .. code:: yaml
+Execute a command and expect to fail with a return code of ``1``:
 
-      jiav:
-        verification_status: "Done"
-        verification_steps:
-          - name: Check the existence of a command
-            backend: shell
-            cmd: which openstack
-            rc: 1
+.. code:: yaml
 
-Attributes
-==========
-
-cmd
----
-
-Shell command to execute.
-
-rc
---
-
-Return code of the executed command.
+   jiav:
+     verification_status: "Done"
+     verification_steps:
+       - name: Check the existence of a command
+         backend: shell
+         cmd:
+           - which
+           - ls
+         rc: 1
