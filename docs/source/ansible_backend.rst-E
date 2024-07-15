@@ -40,7 +40,7 @@ with a single task on localhost:
    .. code:: yaml
 
       jiav:
-        verified_status: "Done"
+        verification_status: "Done"
         verification_steps:
           - name: ansible test
             backend: ansible

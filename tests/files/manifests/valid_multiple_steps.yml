@@ -4,9 +4,9 @@ jiav:
   verification_steps:
     - name: Check for line
       backend: lineinfile
-      path: tests/files/single_lineinfile.yaml
+      path: tests/files/manifests/valid_single_lineinfile.yml
       line: jiav
     - name: Check for line
       backend: regexinfile
-      path: tests/files/single_regexinfile.yaml
+      path: tests/files/manifests/valid_single_regexinfile.yml
       regex: jiav

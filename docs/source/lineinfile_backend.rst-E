@@ -20,7 +20,7 @@ Look for a single line in a file:
    .. code:: yaml
 
       jiav:
-        verified_status: "Done"
+        verification_status: "Done"
         verification_steps:
           - name: Search for line in file
             backend: lineinfile

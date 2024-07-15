@@ -25,7 +25,7 @@ Look for a regex in a file:
    .. code:: yaml
 
       jiav:
-        verified_status: "Done"
+        verification_status: "Done"
         verification_steps:
           - name: Search for a regex in file
             backend: lineinfile

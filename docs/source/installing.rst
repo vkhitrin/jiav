@@ -40,7 +40,7 @@ As part of development, use `poetry <https://python-poetry.org>`_:
 
 .. code::
 
-   poetry install --with=main,dev
+   poetry install --with=main,dev,types
 
 Install From Remote
 ===================

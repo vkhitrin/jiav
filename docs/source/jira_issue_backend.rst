@@ -20,7 +20,7 @@ Verify issue if ``TEST-1`` issue is ``Done``.
    .. code:: yaml
 
       jiav:
-        verification_status: "Done"
+        verified_status: "Done"
         verification_steps:
           - name: Check Jira Issue
             backend: jira_issue

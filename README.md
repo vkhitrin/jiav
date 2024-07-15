@@ -3,16 +3,14 @@
 > [!NOTE]
 > This repository is a **Proof of Concept.**
 
-## Limitations And Words Of Caution
+> [!WARNING]
+> Since this tool executes commands locally, we should avoid trusting public comments as much as possible.
+>
+> It will default to scanning only private comments (regardless of the visibility group). It is possible to read from public comments **if you understand the potential risk, this might cause to your systems**.
+>
+> The output of verification steps is also not uploaded as attachments by default because it is impossible to limit attachments' visibility, refer to [JRASERVER-3893](https://jira.atlassian.com/browse/JRASERVER-3893). It is possible to attach the output **if you understand the potential risk, this might expose sensitive information**.
 
-Since this tool executes commands locally, we should avoid trusting public comments as much as possible.  
-It will default to scanning only private comments (regardless of the visibility group). It is possible to read from public comments **if you understand the potential risk, this might cause to your systems**.
-
-The output of verification steps is also not uploaded as attachments by default because it is impossible to limit attachments' visibility, refer to [JRASERVER-3893](https://jira.atlassian.com/browse/JRASERVER-3893). It is possible to attach the output **if you understand the potential risk, this might expose sensitive information**.
-
-## General
-
-![jiav flow](https://jiav.readthedocs.io/en/latest/_images/Flow.jpeg)
+<https://github.com/user-attachments/assets/1a9d5728-96e3-436a-9e0d-b31f74d5298b>
 
 Jira Issues Auto Verification.  
 This tool aims to provide an auto-verification framework for Jira issues.  
@@ -32,7 +30,7 @@ jiav:
       line: hello_world
 ```
 
-`jiav` allows developers to build custom backends; refer to the [documentation guide](docs/source/developing_backends.rst).  
+`jiav` allows developers to build custom backends; refer to the [documentation](docs/source/developing_backends.rst).  
 An example of a backends shipped externally:
 
 - [jiav-backend-ansible](https://github.com/vkhitrin/jiav-backend-ansible) **this is a risky backend since it allows users to run arbitrary code. Be cautious when enabling it.**
@@ -42,13 +40,17 @@ An example of a backends shipped externally:
 
 `jiav` requires Python `>= 3.8`.
 
-Personal Access Tokens (PATs) are supported [`>=8.14`](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html)
+Self-hosted Jira instances require "Personal Access Tokens" (PAT) which are available starting from
+[`>=8.14`](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html).
+
+Cloud Jira instances require a username + API tokens.
 
 ## Documentation
 
 Visit <https://jiav.readthedocs.io>.
 
-If you do not have access to a Jira instance or wish to attempt this tool in an isolated environment, refer to [demo](docs/source/demo_try_it_yourself.rst).
+If you do not have access to a Jira instance or wish to attempt this tool in an isolated environment, refer to
+[demo](docs/source/demo_try_it_yourself.rst).
 
 ## Installation
 
@@ -143,10 +145,26 @@ jiav —debug validate-manifest —from-file=/path/to/file
 To install in development mode, use `poetry`:
 
 ```bash
-poetry install --with=main,dev
+poetry install --with=main,dev,types
 ```
 
 If proposing new pull requests, please ensure that new/existing tests are passing:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```bash
 pytest

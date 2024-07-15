@@ -31,7 +31,7 @@ Execute a single command and expect a return code equal to 0:
    .. code:: yaml
 
       jiav:
-        verified_status: "Done"
+        verification_status: "Done"
         verification_steps:
           - name: Check the existence of a command
             backend: shell
