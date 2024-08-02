@@ -31,4 +31,4 @@ jobs:
         run: poetry install --with=main,dev
       # TODO: Output results to JUnit and post a comment
       - name: Run Tests
-        run: pytest --verbose
+        run: poetry run pytest --verbose
