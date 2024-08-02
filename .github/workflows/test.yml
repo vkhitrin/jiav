@@ -22,12 +22,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.8.9"
+          python-version: "3.8.18"
       - name: Install Poetry
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: "1.8.3"
       - name: Install jiav With Dev Dependencies
         run: poetry install --with=main,dev
+      # TODO: Output results to JUnit and post a comment
       - name: Run Tests
         run: pytest --verbose
