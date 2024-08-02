@@ -11,9 +11,7 @@ PYTHON_PYLINT_ARGUMENTS: "--disable=F0401,E0611"
 DISABLE:
   - SPELL
 DISABLE_LINTERS:
-  - RST_RSTCHECK # Does not support sphinx
-  - RST_RST_LINT # Does not support sphinx
   - COPYPASTE_JSCPD
 PYTHON_PYRIGHT_PRE_COMMANDS:
-  - command: pip3 install jiav
+  - command: pip3 install .
 VALIDATE_ALL_CODEBASE: true
