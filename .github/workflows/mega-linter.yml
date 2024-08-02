@@ -10,27 +10,30 @@ concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
+permissions:
+  pull-requests: write
+
 jobs:
-  build:
+  megalinter:
     name: MegaLinter
     runs-on: ubuntu-latest
     steps:
       # Git Checkout
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.1.7
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
       # MegaLinter
       - name: MegaLinter
         id: ml
-        uses: oxsecurity/megalinter/flavors/python@v6.17.0
+        uses: oxsecurity/megalinter/flavors/python@v7.13.0
         env:
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Upload MegaLinter artifacts
-      - name: Archive production artifacts
-        if: ${{ success() }} || ${{ failure() }}
-        uses: actions/upload-artifact@v3
+      - name: Archive MegaLinter Artifacts
+        if: success() || failure()
+        uses: actions/upload-artifact@v4.3.5
         with:
           name: MegaLinter reports
           path: |

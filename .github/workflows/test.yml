@@ -1,0 +1,34 @@
+---
+# TODO: Configure a Python Matrix to run tests on multiple releases
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8.18"
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: "1.8.3"
+      - name: Install jiav With Dev Dependencies
+        run: poetry install --with=main,dev
+      # TODO: Output results to JUnit and post a comment
+      - name: Run Tests
+        run: poetry run pytest --verbose
