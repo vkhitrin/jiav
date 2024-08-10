@@ -8,6 +8,11 @@ PYTHON_BANDIT_FILTER_REGEX_EXCLUDE: docs/|tests/
 PYTHON_PYRIGHT_FILTER_REGEX_EXCLUDE: docs/|tests/
 PYTHON_ISORT_CONFIG_FILE: LINTER_DEFAULT
 PYTHON_PYLINT_ARGUMENTS: "--disable=F0401,E0611"
+MARKDOWN_MARKDOWNLINT_ARGUMENTS: "--disable MD028"
+# We use custom extensions that are not supported by rstfmt
+RST_RSTFMT_FILTER_REGEX_EXCLUDE: docs/source/index.rst|docs/source/design_philosophy.rst
+RST_RSTCHECK_FILTER_REGEX_EXCLUDE: docs/source/index.rst|docs/source/design_philosophy.rst
+RST_RST_LINT_FILTER_REGEX_EXCLUDE: docs/source/index.rst|docs/source/design_philosophy.rst|docs/source/backends.rst|docs/source/developing_backends.rst|docs/source/installing_backends.rst|docs/source/user_guide.rst
 DISABLE:
   - SPELL
 DISABLE_LINTERS:

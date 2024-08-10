@@ -1,36 +1,45 @@
-############
- About jiav
-############
+##########
+About jiav
+##########
+
+**J**\ira **I**\ssues **A**\uto **V**\erification.  
+
+.. video:: _static/jiav.mp4
+   :width: 600
 
 ``jiav`` is a `Python <https://www.python.org>`_ based auto verification
 tool for `Jira <https://www.atlassian.com/software/jira>`_.
 
-``jiav``'s primary goal is to provide a robust auto-verification
+The primary goal is to provide a robust auto-verification
 workflow while focusing on ease of use and simplicity.
 
+Users provide a YAML-formatted comment in Jira issues, and the tool will execute it.
+On successful execution, the issue will move to the desired status.
+
+Both self-hosted and cloud Jira instances are supported.
+
 .. toctree::
-   :maxdepth: 1
-   :caption: Installing
+   :hidden:
+   :caption: Installation
+   :glob:
 
    installing
+   installing_backends
 
 .. toctree::
-   :maxdepth: 1
+   :hidden:
    :caption: Using jiav
+   :glob:
 
+   overview
    user_guide
-   design_philosophy
-   demo_try_it_yourself
-
-.. toctree::
-   :maxdepth: 2
-   :caption: jiav Manifest
-
-   jiav_manifest
+   getting_started 
    backends
 
 .. toctree::
-   :maxdepth: 1
+   :hidden:
    :caption: Developing jiav
+   :glob:
 
+   design_philosophy
    developing_backends

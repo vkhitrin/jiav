@@ -3,52 +3,56 @@
 > [!NOTE]
 > This repository is a **Proof of Concept.**
 
-## Limitations And Words Of Caution
+> [!WARNING]
+> Since this tool executes commands locally, we should avoid trusting public comments as much as possible.
+>
+> It will default to scanning only private comments (regardless of the visibility group). It is possible to read from public comments **if you understand the potential risk, this might cause to your systems**.
+>
+> The output of verification steps is also not uploaded as attachments by default because it is impossible to limit attachments' visibility, refer to [JRASERVER-3893](https://jira.atlassian.com/browse/JRASERVER-3893). It is possible to attach the output **if you understand the potential risk, this might expose sensitive information**.
 
-Since this tool executes commands locally, we should avoid trusting public comments as much as possible.  
-It will default to scanning only private comments (regardless of the visibility group). It is possible to read from public comments **if you understand the potential risk, this might cause to your systems**.
+<https://github.com/user-attachments/assets/1a9d5728-96e3-436a-9e0d-b31f74d5298b>
 
-The output of verification steps is also not uploaded as attachments by default because it is impossible to limit attachments' visibility, refer to [JRASERVER-3893](https://jira.atlassian.com/browse/JRASERVER-3893). It is possible to attach the output **if you understand the potential risk, this might expose sensitive information**.
+**J**ira **I**ssues **A**uto **V**erification.
 
-## General
+`jiav` is a [Python](https://www.python.org) based auto verification
+tool for [Jira](https://www.atlassian.com/software/jira).
 
-![jiav flow](https://jiav.readthedocs.io/en/latest/_images/Flow.jpeg)
-
-Jira Issues Auto Verification.  
-This tool aims to provide an auto-verification framework for Jira issues.  
-Users provide a YAML-formatted comment in Jira issues, and the tool will execute it.
+The primary goal is to provide a robust auto-verification
+workflow while focusing on ease of use and simplicity.
+Users provide a YAML-formatted comment in Jira issues, and the tool will execute it.  
 On successful execution, the issue will move to the desired status.
 
-Example of a manifest:
+Both self-hosted and cloud Jira instances are supported.
 
-```yaml
----
-jiav:
-  verified_status: "Done" # Status has to be present in the project workflow
-  verification_steps:
-    - name: Check line exists in file
-      backend: line
-      path: /path/to/file
-      line: hello_world
-```
+## Backends
 
-`jiav` allows developers to build custom backends; refer to the [documentation guide](docs/source/developing_backends.rst).  
+`jiav` allows developers to build custom backends; refer to the [development guide](docs/source/developing_backends.rst).
+
+Built-in backends:
+
+- `lineinfile` - looks for a line in file.
+- `regexinfile` - looks for a regex in file.
+- `jira_issue` - queries a Jira issue's status.
+
 An example of a backends shipped externally:
 
-- [jiav-backend-ansible](https://github.com/vkhitrin/jiav-backend-ansible) **this is a risky backend since it allows users to run arbitrary code. Be cautious when enabling it.**
-- [jiav-backend-command](https://github.com/vkhitrin/jiav-backend-command) **This is a risky backend since it allows users to run arbitrary code. Be cautious when enabling it.**
+- [`ansible`](https://github.com/vkhitrin/jiav-backend-ansible) - runs [Ansible](https://www.ansible.com) playbooks.  
+  **This is a risky backend since it allows users to run arbitrary code. Be cautious when enabling it!**
+- [`command`](https://github.com/vkhitrin/jiav-backend-command) - runs shell commands.  
+  **This is a risky backend since it allows users to run arbitrary code. Be cautious when enabling it!**
 
 ## Requirements
 
 `jiav` requires Python `>= 3.8`.
 
-Personal Access Tokens (PATs) are supported [`>=8.14`](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html)
+Self-hosted Jira instances require "Personal Access Tokens" (PAT) which are available starting from
+[`>=8.14`](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html).
+
+Cloud Jira instances require a username + API tokens.
 
 ## Documentation
 
 Visit <https://jiav.readthedocs.io>.
-
-If you do not have access to a Jira instance or wish to attempt this tool in an isolated environment, refer to [demo](docs/source/demo_try_it_yourself.rst).
 
 ## Installation
 
@@ -89,52 +93,11 @@ pipx install .
 
 ## Usage
 
-After installing this tool `jiav` command is available.
+Please refer to the user guide:
+<https://jiav.readthedocs.io/en/latest/user_guide.html>
 
-There are several sub-commands available, to view them execute `jiav`:
-
-```bash
-usage: jiav [-v | --version] [-d | --debug] <command> [<args>]
-
-Global flags
-  -v --version  prints version
-  -d --debug   show debug
-
-Available commands
-  verify        Verifies issues
-  list-backends    List available backends
-  validate-manifest  Validate jiav manifest
-```
-
-### Verify
-
-Attempt to verify issues from a list of issues:
-
-```bash
-jiav --debug verify --jira='<JIRA_URL>' --access-token='<ACCESS_TOKEN>' --issue='<KEY-1>' --issue='<KEY-2>'
-```
-
-Attempt to verify issues from a JQL and output the result in JSON format:
-
-```bash
-jiav --debug verify --jira='<JIRA_URL>' --access-token='<ACCESS_TOKEN>' --query='issue = "KEY-1"' --format='json'
-```
-
-### List backends
-
-List installed backends:
-
-```bash
-jiav list-backends
-```
-
-### Validate manifest
-
-Validate `jiav` manifest from a file:
-
-```bash
-jiav —debug validate-manifest —from-file=/path/to/file
-```
+If you do not have access to a Jira instance or wish to attempt this tool in an isolated environment, refer to
+a ["Getting Started"](docs/source/getting_started.rst) on setting up a demo environment.
 
 ## Contributing
 
@@ -143,7 +106,7 @@ jiav —debug validate-manifest —from-file=/path/to/file
 To install in development mode, use `poetry`:
 
 ```bash
-poetry install --with=main,dev
+poetry install --with=main,dev,types
 ```
 
 If proposing new pull requests, please ensure that new/existing tests are passing:

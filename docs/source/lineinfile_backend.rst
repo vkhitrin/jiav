@@ -2,40 +2,31 @@
  lineinfile Backend
 ####################
 
-**********
- Overview
-**********
+Looks for a line in file.
 
-``jiav`` can look for a line in files to verify issues.
+**Attributes**
 
-*********
- Example
-*********
+.. list-table::
+   :widths: 10 90
+   :header-rows: 1
 
-Basic scenario
-==============
+   -  -  Property
+      -  Descrption
+   -  -  path
+      -  Path to a local file. **[required]**
+   -  -  line
+      -  Line to look in a file. **[required]**
+
+**Examples**
 
 Look for a single line in a file:
 
-   .. code:: yaml
+.. code:: yaml
 
-      jiav:
-        verification_status: "Done"
-        verification_steps:
-          - name: Search for line in file
-            backend: lineinfile
-            path: '/path/to/file'
-            line: 'line_in_file'
-
-Attributes
-==========
-
-path
-----
-
-Path to a file.
-
-line
-----
-
-Line to look in a file.
+   jiav:
+     verification_status: "Done"
+     verification_steps:
+       - name: "Search for line in file"
+         backend: "lineinfile"
+         path: "/path/to/file"
+         line: "line_in_file"

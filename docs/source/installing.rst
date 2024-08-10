@@ -2,48 +2,13 @@
  Installation Guide
 ####################
 
-***************
- Prerequisites
-***************
-
 .. warning::
 
    Only Python3.8 and above is supported.
 
-**************
- Installation
-**************
-
-Install From Source
-===================
-
-Clone repository from remote:
-
-.. code::
-
-   git clone https://github.com/vkhitrin/jiav.git
-   cd jiav
-
-Install ``jiav`` from cloned repo using ``pip``:
-
-.. code::
-
-   pip3 install .
-
-Or `pipx <https://pipx.pypa.io>`_:
-
-.. code::
-
-   pipx install .
-
-As part of development, use `poetry <https://python-poetry.org>`_:
-
-.. code::
-
-   poetry install --with=main,dev
-
-Install From Remote
-===================
+*********************
+ Install From Remote
+*********************
 
 Install from `PyPi <https://pypi.org>`_ using ``pip3``:
 
@@ -57,17 +22,47 @@ Or ``pipx``:
 
    pipx install jiav
 
-Uninstall
-=========
+*********************
+ Install From Source
+*********************
+
+Clone the repository from remote:
+
+.. code:: bash
+
+   git clone https://github.com/vkhitrin/jiav.git
+   cd jiav
+
+Install ``jiav`` from cloned repo using ``pip``:
+
+.. code:: bash
+
+   pip3 install .
+
+Or `pipx <https://pipx.pypa.io>`_:
+
+.. code:: bash
+
+   pipx install .
+
+As part of development, use `poetry <https://python-poetry.org>`_:
+
+.. code:: bash
+
+   poetry install --with=main,dev,types
+
+***********
+ Uninstall
+***********
 
 Uninstall using ``pip3``:
 
-.. code::
+.. code:: bash
 
    pip3 uninstall jiav
 
 Or ``pipx``:
 
-.. code::
+.. code:: bash
 
    pipx uninstall jiav

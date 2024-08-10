@@ -2,10 +2,6 @@
  Ansible Backend
 #################
 
-**********
- Overview
-**********
-
 .. note::
 
    This backend is shipped externally at `jiav-backend-ansible
@@ -17,62 +13,38 @@
       code.
    |  **Use it at your own risk**.
 
-``jiav`` can execute `Ansible <https://www.ansible.com/>`_ playbooks
-**locally** (from the same host executing ``jiav``).
+Execute `Ansible <https://www.ansible.com/>`_ playbook.
+
+`ansible-runner <https://ansible.readthedocs.io>`_ is used to execute
+ansible playbooks.
 
 Ansible backend requires the user to have Ansible configured.
 
-`ansible-runner
-<https://ansible.readthedocs.io/projects/runner/en/latest/>`_ is used to
-execute ansible playbooks.
+**Attributes**
 
-*********
- Example
-*********
+.. list-table::
+   :widths: 10 90
+   :header-rows: 1
 
-Basic scenario
-==============
+   -  -  Property
+      -  Descrption
+   -  -  playbook
+      -  Ansible playbook (formatted in YAML). **[required]**
+   -  -  ansible_binary
+      -  Path to Ansible binary.
 
-Execute an `Ansible playbook
-<https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html>`_
-with a single task on localhost:
+**Examples**
 
-   .. code:: yaml
+Execute a single task on localhost:
 
-      jiav:
-        verification_status: "Done"
-        verification_steps:
-          - name: ansible test
-            backend: ansible
-            playbook:
-              - hosts: localhost
-                tasks:
-                  - shell: which openstack
+.. code:: yaml
 
-Multiple Plays Scenario
-=======================
-
-Execute a playbook on several hosts:
-
-   .. code:: yaml
-
-      jiav:
-        verification_status: "Done"
-        verification_steps:
-          - name: ansible test
-            backend: ansible
-            playbook:
-              - hosts: localhost
-                tasks:
-                  - shell: which openstack
-              - hosts: tester
-                tasks:
-                  - shell: which ls
-
-Attributes
-==========
-
-playbook
---------
-
-Ansible playbook (formatted in YAML) that will be executed.
+   jiav:
+     verification_status: "Done"
+     verification_steps:
+       - name: ansible test
+         backend: ansible
+         playbook:
+           - hosts: localhost
+             tasks:
+               - shell: which openstack

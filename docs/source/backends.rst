@@ -1,21 +1,26 @@
-###############
- jiav Backends
-###############
+##########
+ Backends
+##########
 
 Backends in ``jiav`` are used to execute various verification steps.
 
-Each backend represents a different way of executing a user-defined
+Each backend represents a distinct method of executing user-defined
 logic.
 
 Developers are able to extend ``jiav`` with custom backends, refer to
-:ref:`developing_backends:Developing Backends`.
+:ref:`developing backends`.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Available backends
+   :caption: Builtin Backends
 
-   ansible_backend
    lineinfile_backend
    regexinfile_backend
-   command_backend
    jira_issue_backend
+
+.. toctree::
+   :maxdepth: 1
+   :caption: External Backends
+
+   ansible_backend
+   command_backend
