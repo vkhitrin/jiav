@@ -39,19 +39,19 @@ command:
 
    -  -  Exit Code
       -  Description
-   -  -  `0`
+   -  -  ``0``
       -  Successful.
-   -  -  `1`
+   -  -  ``1``
       -  Issues connecting to Jira.
-   -  -  `2`
+   -  -  ``2``
       -  Issues authenticating with Jira.
-   -  -  `3`
+   -  -  ``3``
       -  JQL returned an error.
-   -  -  `4`
+   -  -  ``4``
       -  No issues returned.
-   -  -  `5`
+   -  -  ``5``
       -  Invalided manifest (when executing ``jiav validate-manifest``).
-   -  -  `6`
+   -  -  ``6``
       -  No issuers were verified.
 
 *************
@@ -91,7 +91,7 @@ Examlpe:
 Verifies issues in Jira.
 
 .. list-table::
-   :widths: 25 25 50
+   :widths: 15 25 60
    :header-rows: 1
 
    -  -  Options
@@ -122,9 +122,9 @@ Verifies issues in Jira.
       -  JQL query. NOTE: This argument is mutually exclusive with
          arguments: [issue].
 
-   -  -  ``--upload-attachment-unsafe``
+   -  -  ``--upload-attachment``
 
-      -  ``JIAV_VERIFY_UPLOAD_ATTACHMENT_UNSAFE``
+      -  ``JIAV_VERIFY_UPLOAD_ATTACHMENT``
 
       -  Uploads attachment of execution, this is not safe since all
          users who can access the ticket will be able to view it; refer
@@ -162,4 +162,4 @@ Examlpe:
 
 .. code:: bash
 
-   jiav verify --jira "http://example.com/jira" -a "<ACCESS_TOKEN>" -i 'EXAMPLE-1' --allow-public-comments --upload-attachment-unsafe
+   jiav verify --jira "http://example.com/jira" -a "<ACCESS_TOKEN>" -i 'EXAMPLE-1' --allow-public-comments --upload-attachment

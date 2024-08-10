@@ -27,7 +27,7 @@ click.rich_click.OPTION_GROUPS = {
         },
         {
             "name": "Dangerous options",
-            "options": ["--upload-attachment-unsafe", "--allow-public-comments"],
+            "options": ["--upload-attachment", "--allow-public-comments"],
         },
     ]
 }
@@ -144,7 +144,7 @@ def validate_manifest(from_file: click.File) -> None:
     mutually_exclusive=["issue"],
 )
 @click.option(
-    "--upload-attachment-unsafe",
+    "--upload-attachment",
     help=(
         " ".join(
             [
@@ -195,7 +195,7 @@ def verify(
     username: str,
     issue: List[str],
     query: str,
-    upload_attachment_unsafe: bool,
+    upload_attachment: bool,
     allow_public_comments: bool,
     no_comment_on_failure: bool,
     dry_run: bool,
@@ -207,7 +207,7 @@ def verify(
     verifeid_issues: List[Issue] = []
     jiav_logger: Logger = logger.configure_logger(debug)
     # If user requested to upload attachment, warn them
-    if upload_attachment_unsafe:
+    if upload_attachment:
         jiav_logger.warn(
             "".join(
                 [
@@ -286,7 +286,7 @@ def verify(
     verifeid_issues = verification.verify_issues(
         issues=issues,
         jira_connection=jira_connection,
-        upload_attachment=upload_attachment_unsafe,
+        upload_attachment=upload_attachment,
         allow_public_comments=allow_public_comments,
         no_comment_on_failure=no_comment_on_failure,
         dry_run=dry_run,
