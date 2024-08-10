@@ -29,6 +29,31 @@ command:
 
    jiav --version
 
+************
+ Exit Codes
+************
+
+.. list-table::
+   :widths: 10 90
+   :header-rows: 1
+
+   -  -  Exit Code
+      -  Description
+   -  -  `0`
+      -  Successful.
+   -  -  `1`
+      -  Issues connecting to Jira.
+   -  -  `2`
+      -  Issues authenticating with Jira.
+   -  -  `3`
+      -  JQL returned an error.
+   -  -  `4`
+      -  No issues returned.
+   -  -  `5`
+      -  Invalided manifest (when executing ``jiav validate-manifest``).
+   -  -  `6`
+      -  No issuers were verified.
+
 *************
  Subcommands
 *************
