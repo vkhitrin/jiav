@@ -72,8 +72,12 @@ class JiraConnection(ABC):
                 else:
                     raise exceptions.JiraUnhandledException()
             jiav_logger.info(
-                f"Successfully authenticated with Jira instance '{url}' of",
-                " type '{instance_type}'",
+                " ".join(
+                    [
+                        f"Successfully authenticated with Jira instance '{url}' of",
+                        f"type '{instance_type}'",
+                    ]
+                )
             )
 
     def fetch_issues(self, issues: List[str], jql: str) -> List[Issue]:

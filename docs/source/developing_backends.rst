@@ -16,7 +16,7 @@ in the ``jiav.backend`` group.
 
 That entry point should reference a subclass of the
 ``jiav.backend.BaseBackend`` abstract base class. This allows jiav
-to discover installed adapters and instantiate a selected backend at
+to discover installed backends and instantiate a selected backend at
 run-time.
 
 ****************
@@ -68,7 +68,7 @@ All backends are expected to subscribe to the global logger
 In this section, we will create an ``example`` backend that checks if an
 environment variable is set.
 
-#. Your adapter must register an entry point in the ``jiav.backend``
+#. Your backend must register an entry point in the ``jiav.backend``
    group, using the packaging software you use to build your project.
    With Poetry, you can define the entry point in your
    ``pyproject.toml`` file:
@@ -215,5 +215,5 @@ environment variable is set.
             backend: example
             example: "example"
       EOF
-      export JIAV_MANIFEST="/tmp/example_manifest.yaml"
+      export JIAV_EXAMPLE="/tmp/example_manifest.yaml"
       jiav validate-manifest --from-file="/tmp/example_manifest.yaml"
