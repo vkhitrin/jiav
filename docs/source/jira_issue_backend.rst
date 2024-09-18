@@ -14,7 +14,7 @@ Look for a Jira issue status.
       -  Descrption
    -  -  issue
       -  Jira issue key. **[required]**
-   -  -  regex
+   -  -  status
       -  Jira issue status. **[required]**
 
 **Examples**

@@ -52,7 +52,7 @@ command:
    -  -  ``5``
       -  Invalided manifest (when executing ``jiav validate-manifest``).
    -  -  ``6``
-      -  No issuers were verified.
+      -  No issues were verified.
 
 *************
  Subcommands

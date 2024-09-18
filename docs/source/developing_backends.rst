@@ -11,11 +11,11 @@ available, we want to expose the ability for developers to create custom
 ********************
 
 A backend is a Python package that declares an `entry_point
-<https://packaging.python.org/en/latest/specifications/entry-points/>`_.
+<https://packaging.python.org/en/latest/specifications/entry-points/>`_
 in the ``jiav.backend`` group.
 
 That entry point should reference a subclass of the
-``jiav.backend.BaseBackend`` abstract base class. This allows Harlequin
+``jiav.backend.BaseBackend`` abstract base class. This allows jiav
 to discover installed backends and instantiate a selected backend at
 run-time.
 
